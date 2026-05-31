@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yayın Ekranı - Demode TV Canlı Kasa</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Tam Ekran</button>
+
+<div class="app">
+  <main class="panel main-panel">
+    <header class="header">
+      <div class="logo">💸 Demode TV Canlı Kasa</div>
+      <div class="status">
+        <span>Oda: <strong id="hRoom">-</strong></span>
+        <span>Durum: <strong id="hPhase">-</strong></span>
+        <span>Soru: <strong id="hRound">-</strong></span>
+        <span>Süre: <strong id="timerText">-</strong></span>
+      </div>
+    </header>
+    <section class="content">
+      <div id="questionArea"></div>
+      <div id="resultsBox"></div>
+    </section>
+  </main>
+
+  <aside class="side-panel">
+    <section class="side-card">
+      <div class="side-title">Canlı Kasa Tablosu</div>
+      <div class="side-body players" id="playersBox"></div>
+    </section>
+    <section class="side-card">
+      <div class="side-title">Toplam</div>
+      <div class="side-body">
+        <p>Toplam kasa: <strong id="hTotal" class="money">0 TL</strong></p>
+        <p>Lider: <strong id="hLeader" class="money">-</strong></p>
+      </div>
+    </section>
+  </aside>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="game.js"></script>
+<script>
+let roomCode = qs("room") || prompt("Yayın ekranı için oda kodu:");
+let state = null;
+let activeRef = null;
+
+function listenRoom(code){
+  activeRef = roomRef(code);
+  activeRef.on("value", snap=>{
+    state = snap.val();
+    if(!state) return;
+    renderHeader(state);
+    renderQuestion(state);
+    renderPlayers(state);
+    renderResults(state);
+  });
+}
+
+startLocalTick(()=>{ if(state){ renderTimer(state); } });
+
+if(roomCode){
+  roomCode = roomCode.toUpperCase();
+  listenRoom(roomCode);
+}
+</script>
+</body>
+</html>

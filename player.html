@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oyuncu - Demode TV Canlı Kasa</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Tam Ekran</button>
+
+<div class="app single">
+  <main class="panel main-panel">
+    <header class="header">
+      <div class="logo">📱 Oyuncu Ekranı</div>
+      <div class="status">
+        <span>Oda: <strong id="hRoom">-</strong></span>
+        <span>Durum: <strong id="hPhase">-</strong></span>
+        <span>Süre: <strong id="timerText">-</strong></span>
+      </div>
+    </header>
+
+    <section class="content center" id="joinArea">
+      <h1>Odaya Katıl</h1>
+      <p>İsmini yaz, odaya gir. Para dağıtımını kilitledikten sonra değiştiremezsin.</p>
+      <div class="grid-2">
+        <div class="card">
+          <label>Oda kodu</label>
+          <input id="roomInput" placeholder="Örn: AB123">
+        </div>
+        <div class="card">
+          <label>Adın</label>
+          <input id="nameInput" placeholder="Adını yaz">
+        </div>
+      </div>
+      <button class="btn primary" onclick="doJoin()">Odaya Katıl</button>
+    </section>
+
+    <section class="content hidden" id="playArea">
+      <div class="card">
+        <h2 id="meName">Oyuncu</h2>
+        <p>Benim kasam: <strong class="money" id="meCash">0 TL</strong></p>
+        <p class="muted" id="lockInfo">Para yatırma bekleniyor.</p>
+      </div>
+
+      <div id="questionArea"></div>
+
+      <div class="card" id="betCard">
+        <h3>Gizli Para Dağıtımı</h3>
+        <p class="muted">Toplam dağıttığın para kasana eşit olmalı. Kilitledikten sonra diğerleri sadece “kilitledi” görür.</p>
+
+        <div class="alloc-grid">
+          <div><label>A</label><input id="a0" type="number" min="0" step="10000" value="0" oninput="updateBetTotal()"></div>
+          <div><label>B</label><input id="a1" type="number" min="0" step="10000" value="0" oninput="updateBetTotal()"></div>
+          <div><label>C</label><input id="a2" type="number" min="0" step="10000" value="0" oninput="updateBetTotal()"></div>
+          <div><label>D</label><input id="a3" type="number" min="0" step="10000" value="0" oninput="updateBetTotal()"></div>
+        </div>
+
+        <p style="margin-top:14px">Dağıtılan: <strong id="betTotal" class="money">0 TL</strong> • <span id="betStatus" class="burned">Eksik</span></p>
+
+        <div class="actions">
+          <button class="btn secondary quick" onclick="putAll(0)">Hepsi A</button>
+          <button class="btn secondary quick" onclick="putAll(1)">Hepsi B</button>
+          <button class="btn secondary quick" onclick="putAll(2)">Hepsi C</button>
+          <button class="btn secondary quick" onclick="putAll(3)">Hepsi D</button>
+          <button class="btn secondary quick" onclick="splitEven()">Eşit Böl</button>
+          <button class="btn danger quick" onclick="clearBet()">Temizle</button>
+          <button id="lockBtn" class="btn primary" onclick="doLock()" disabled>Gizli Kilitle</button>
+        </div>
+      </div>
+
+      <div id="resultsBox"></div>
+    </section>
+  </main>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="game.js"></script>
+<script>
+let roomCode = qs("room") || "";
+let playerId = null;
+let state = null;
+let activeRef = null;
+
+byId("roomInput").value = roomCode;
+
+function me(){
+  return state?.players?.[playerId] ? { id:playerId, ...state.players[playerId] } : null;
+}
+
+async function doJoin(){
+  try{
+    roomCode = byId("roomInput").value.trim().toUpperCase();
+    const name = byId("nameInput").value.trim();
+    playerId = await joinPlayer(roomCode, name);
+    byId("joinArea").classList.add("hidden");
+    byId("playArea").classList.remove("hidden");
+    listenRoom();
+  }catch(e){ alert(e.message); }
+}
+
+function listenRoom(){
+  if(activeRef) activeRef.off();
+  activeRef = roomRef(roomCode);
+  activeRef.on("value", snap=>{
+    state = snap.val();
+    if(!state) return;
+    renderHeader(state);
+    renderQuestion(state);
+    renderResults(state);
+    renderMe();
+  });
+}
+
+function renderMe(){
+  const p = me();
+  if(!p) return;
+  byId("meName").textContent = p.name;
+  byId("meCash").textContent = money(p.cash || 0);
+
+  const disabled = state.phase !== "betting" || p.locked || p.eliminated || Number(p.cash || 0) <= 0;
+  [0,1,2,3].forEach(i=>byId(`a${i}`).disabled = disabled);
+  document.querySelectorAll(".quick").forEach(btn=>btn.disabled = disabled);
+
+  if(p.eliminated || Number(p.cash || 0) <= 0){
+    byId("lockInfo").textContent = "Elendin. Tabloda kalıyorsun ama para yatıramazsın.";
+    byId("betCard").classList.add("hidden");
+  }else{
+    byId("betCard").classList.remove("hidden");
+    if(state.phase === "betting"){
+      byId("lockInfo").textContent = p.locked ? "Bu soru için kilitledin. Artık değişmez." : "Para dağıtımı açık. Gizli kilitle.";
+    }else if(state.phase === "revealed"){
+      byId("lockInfo").textContent = "Cevap açıklandı. Sonraki soru bekleniyor.";
+    }else{
+      byId("lockInfo").textContent = "Oyun bekleniyor.";
+    }
+  }
+  updateBetTotal();
+}
+
+function getBet(){
+  return [0,1,2,3].map(i=>Math.max(0, Math.floor(Number(byId(`a${i}`).value)||0)));
+}
+
+function setBet(arr){
+  arr.forEach((v,i)=>byId(`a${i}`).value = Math.max(0, Math.round(v)));
+  updateBetTotal();
+}
+
+function updateBetTotal(){
+  const p = me();
+  if(!p) return;
+  const total = getBet().reduce((a,b)=>a+b,0);
+  byId("betTotal").textContent = money(total);
+  const status = byId("betStatus");
+  if(total === Number(p.cash || 0)){
+    status.textContent = "Tamam";
+    status.className = "kept";
+  }else if(total > Number(p.cash || 0)){
+    status.textContent = `${money(total - Number(p.cash || 0))} fazla`;
+    status.className = "burned";
+  }else{
+    status.textContent = `${money(Number(p.cash || 0) - total)} eksik`;
+    status.className = "burned";
+  }
+  byId("lockBtn").disabled = state?.phase !== "betting" || p.locked || p.eliminated || total !== Number(p.cash || 0);
+}
+
+function putAll(i){
+  const p = me();
+  if(!p) return;
+  const arr = [0,0,0,0];
+  arr[i] = Number(p.cash || 0);
+  setBet(arr);
+}
+
+function splitEven(){
+  const p = me();
+  if(!p) return;
+  const cash = Number(p.cash || 0);
+  const base = Math.floor(cash / 4 / 10000) * 10000;
+  const arr = [base,base,base,base];
+  arr[0] += cash - arr.reduce((a,b)=>a+b,0);
+  setBet(arr);
+}
+
+function clearBet(){ setBet([0,0,0,0]); }
+
+async function doLock(){
+  try{
+    await lockPlayerBet(roomCode, playerId, getBet());
+  }catch(e){ alert(e.message); }
+}
+
+startLocalTick(()=>{ if(state){ renderTimer(state); } });
+</script>
+</body>
+</html>
