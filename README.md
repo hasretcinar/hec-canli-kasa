@@ -24,3 +24,14 @@ Bu sürüm Node.js gerektirmez. Dosyaları Netlify Drop veya Firebase Hosting gi
 
 Bu prototip hızlı test içindir. Firebase Rules şu an açık bırakıldıysa herkes yazabilir.
 Yayına çıkmadan önce kuralları sıkılaştırmak gerekir.
+
+
+## v2 Güncellemesi
+
+- Oyuncu ekranında para girişleri şık kutularının içine alındı.
+- Lobi ekranında soru artık erken görünmez.
+- Yayın ve moderatör ekranında toplam kasa kartı kaldırıldı.
+- Sağ panel canlı sıralama olarak çalışır.
+- Finalde herkesin ekranında madalyalı liderboard görünür.
+
+Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye tekrar yükleyip commit etmek yeterlidir.

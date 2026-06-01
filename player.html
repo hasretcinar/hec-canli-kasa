@@ -6,7 +6,7 @@
   <title>Oyuncu - Demode TV Canlı Kasa</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="player-page">
 <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Tam Ekran</button>
 
 <div class="app single">
@@ -36,33 +36,31 @@
       <button class="btn primary" onclick="doJoin()">Odaya Katıl</button>
     </section>
 
-    <section class="content hidden" id="playArea">
-      <div class="card">
-        <h2 id="meName">Oyuncu</h2>
-        <p>Benim kasam: <strong class="money" id="meCash">0 TL</strong></p>
-        <p class="muted" id="lockInfo">Para yatırma bekleniyor.</p>
+    <section class="content hidden player-content" id="playArea">
+      <div class="player-top-card">
+        <div>
+          <div class="small">Yarışmacı</div>
+          <h2 id="meName">Oyuncu</h2>
+        </div>
+        <div>
+          <div class="small">Benim kasam</div>
+          <div class="money player-cash" id="meCash">0 TL</div>
+        </div>
+        <div>
+          <div class="small">Durum</div>
+          <p class="muted" id="lockInfo">Para yatırma bekleniyor.</p>
+        </div>
       </div>
 
       <div id="questionArea"></div>
 
-      <div class="card" id="betCard">
-        <h3>Gizli Para Dağıtımı</h3>
-        <p class="muted">Toplam dağıttığın para kasana eşit olmalı. Kilitledikten sonra diğerleri sadece “kilitledi” görür.</p>
-
-        <div class="alloc-grid">
-          <div><label>A</label><input id="a0" type="number" min="0" step="10000" value="0" oninput="updateBetTotal()"></div>
-          <div><label>B</label><input id="a1" type="number" min="0" step="10000" value="0" oninput="updateBetTotal()"></div>
-          <div><label>C</label><input id="a2" type="number" min="0" step="10000" value="0" oninput="updateBetTotal()"></div>
-          <div><label>D</label><input id="a3" type="number" min="0" step="10000" value="0" oninput="updateBetTotal()"></div>
+      <div class="card compact-betbar" id="betCard">
+        <div>
+          <div class="small">Dağıtılan</div>
+          <strong id="betTotal" class="money">0 TL</strong>
+          <span id="betStatus" class="burned">Eksik</span>
         </div>
-
-        <p style="margin-top:14px">Dağıtılan: <strong id="betTotal" class="money">0 TL</strong> • <span id="betStatus" class="burned">Eksik</span></p>
-
-        <div class="actions">
-          <button class="btn secondary quick" onclick="putAll(0)">Hepsi A</button>
-          <button class="btn secondary quick" onclick="putAll(1)">Hepsi B</button>
-          <button class="btn secondary quick" onclick="putAll(2)">Hepsi C</button>
-          <button class="btn secondary quick" onclick="putAll(3)">Hepsi D</button>
+        <div class="compact-actions">
           <button class="btn secondary quick" onclick="splitEven()">Eşit Böl</button>
           <button class="btn danger quick" onclick="clearBet()">Temizle</button>
           <button id="lockBtn" class="btn primary" onclick="doLock()" disabled>Gizli Kilitle</button>
@@ -90,6 +88,76 @@ function me(){
   return state?.players?.[playerId] ? { id:playerId, ...state.players[playerId] } : null;
 }
 
+
+function renderPlayerQuestion(){
+  const area = byId("questionArea");
+  if(!area || !state) return;
+
+  if(state.phase === "lobby"){
+    area.innerHTML = `
+      <div class="card waiting-card">
+        <div class="badge">Lobi</div>
+        <h2>Oyun başlatılması bekleniyor</h2>
+        <p class="muted">Moderatör oyunu başlatınca soru ve para dağıtım alanı burada açılacak.</p>
+      </div>
+    `;
+    return;
+  }
+
+  if(state.phase === "final"){
+    renderQuestion(state);
+    return;
+  }
+
+  const q = publicQuestionForRender(state);
+  if(!q){
+    renderQuestion(state);
+    return;
+  }
+
+  const p = me();
+  const showCorrect = state.phase === "revealed";
+  const disabled = !p || state.phase !== "betting" || p.locked || p.eliminated || Number(p.cash || 0) <= 0;
+
+  let media = "";
+  if(q.image) media += `<div class="media compact-media"><img src="${q.image}" alt="Görselli soru"></div>`;
+  if(q.audio) media += `<div class="media compact-media"><p class="muted">Sesli soru</p><audio controls preload="auto" src="${q.audio}"></audio></div>`;
+  if(q.video) media += `<div class="media compact-media"><video controls src="${q.video}"></video></div>`;
+
+  const opts = q.options.map((opt,i)=>{
+    const oldValue = byId(`a${i}`)?.value || 0;
+    const cls = showCorrect ? (i === q.correct ? " correct" : " wrong") : "";
+    return `
+      <div class="option bet-option${cls}">
+        <div class="bet-option-main">
+          <span class="letter">${letters[i]}</span>
+          <strong>${escapeHtml(opt)}</strong>
+        </div>
+        <div class="bet-input-row">
+          <input id="a${i}" type="number" min="0" step="10000" value="${oldValue}" oninput="updateBetTotal()" ${disabled ? "disabled" : ""}>
+          <button class="btn secondary quick mini-all" onclick="putAll(${i})" ${disabled ? "disabled" : ""}>Hepsi</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  area.innerHTML = `
+    <div class="card question-card player-question-card">
+      <div class="player-question-head">
+        <div>
+          <div class="badge">Soru ${q.index+1} / ${q.total}</div>
+          <p class="muted" style="margin-top:8px">Kategori: ${q.category}</p>
+        </div>
+        <div class="badge">${state.phase === "betting" ? "Para yatırma" : "Cevap açıklandı"}</div>
+      </div>
+      ${media}
+      <h2>${q.question}</h2>
+      <div class="options player-options">${opts}</div>
+    </div>
+  `;
+  updateBetTotal();
+}
+
 async function doJoin(){
   try{
     roomCode = byId("roomInput").value.trim().toUpperCase();
@@ -108,7 +176,7 @@ function listenRoom(){
     state = snap.val();
     if(!state) return;
     renderHeader(state);
-    renderQuestion(state);
+    renderPlayerQuestion();
     renderResults(state);
     renderMe();
   });

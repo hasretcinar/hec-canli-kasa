@@ -84,13 +84,30 @@ function renderTimer(state){
 function renderQuestion(state, containerId="questionArea"){
   const area = byId(containerId);
   if(!area) return;
+
+  if(!state || state.phase === "lobby"){
+    area.innerHTML = `
+      <div class="card waiting-card">
+        <div class="badge">Lobi</div>
+        <h2>Oyun başlatılması bekleniyor</h2>
+        <p class="muted">Oyuncular odaya katılınca burada görünecek. Moderatör oyunu başlatınca ilk soru açılır.</p>
+      </div>
+    `;
+    return;
+  }
+
+  if(state.phase === "final"){
+    renderFinalBoard(state, containerId);
+    return;
+  }
+
   const q = publicQuestionForRender(state);
   if(!q){
     area.innerHTML = `<div class="card"><h2>Henüz soru yok.</h2><p class="muted">Moderatör oyunu başlatınca soru gelir.</p></div>`;
     return;
   }
 
-  const showCorrect = state.phase === "revealed" || state.phase === "final";
+  const showCorrect = state.phase === "revealed";
   let media = "";
   if(q.image) media += `<div class="media"><img src="${q.image}" alt="Görselli soru"></div>`;
   if(q.audio) media += `<div class="media"><p class="muted">Sesli soru</p><audio controls preload="auto" src="${q.audio}"></audio></div>`;
@@ -112,20 +129,51 @@ function renderQuestion(state, containerId="questionArea"){
   `;
 }
 
+function medalFor(index){
+  return index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : "";
+}
+
 function renderPlayers(state, containerId="playersBox"){
   const box = byId(containerId);
   if(!box) return;
   const arr = ranking(state);
   box.innerHTML = arr.map((p,i)=>`
     <div class="player-row ${i===0 ? "leader" : ""} ${p.locked ? "locked" : ""}">
-      <div class="rank">${i+1}</div>
+      <div class="rank">${medalFor(i) || (i+1)}</div>
       <div>
         <strong>${escapeHtml(p.name || "Oyuncu")}</strong>
-        <div class="small">${p.eliminated ? "Elendi" : (p.locked ? "Kilitledi" : "Bekleniyor")} • ${p.correctCount || 0} doğru</div>
+        <div class="small">${p.eliminated ? "Elendi" : (p.locked ? "Kilitledi" : "Bekleniyor")} • ${p.correctCount || 0} doğru • ${money(p.burned || 0)} yandı</div>
       </div>
       <div class="money">${money(p.cash || 0)}</div>
     </div>
   `).join("") || `<p class="muted">Oyuncu bekleniyor...</p>`;
+}
+
+
+function renderFinalBoard(state, containerId="questionArea"){
+  const area = byId(containerId);
+  if(!area) return;
+  const arr = ranking(state);
+
+  area.innerHTML = `
+    <div class="card question-card final-board">
+      <div class="badge">Final Sıralaması</div>
+      <h1>Canlı Kasa Kazananı</h1>
+      ${arr[0] ? `<h2 class="final-winner">🥇 ${escapeHtml(arr[0].name)} — ${money(arr[0].cash || 0)}</h2>` : ""}
+      <div class="final-list">
+        ${arr.map((p,i)=>`
+          <div class="final-row ${i===0 ? "champion" : ""}">
+            <div class="final-medal">${medalFor(i) || (i+1)}</div>
+            <div>
+              <strong>${escapeHtml(p.name || "Oyuncu")}</strong>
+              <div class="small">${p.correctCount || 0} doğru • ${money(p.burned || 0)} yandı • ${p.eliminated ? "Elendi" : "Oyunu tamamladı"}</div>
+            </div>
+            <div class="money">${money(p.cash || 0)}</div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
 }
 
 function renderResults(state, containerId="resultsBox"){
