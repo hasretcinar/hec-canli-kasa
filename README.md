@@ -49,3 +49,11 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Cevap açıldıktan sonra yayın/moderatör/oyuncu ekranında oyuncu bazlı A-B-C-D para dağılım tablosu görünür.
 - Her oyuncunun A, B, C ve D şıklarına kaç TL koyduğu aynı hizalı sütunlarda gösterilir.
 - Doğru sütun yeşil, yanlış sütunlar sönük/kırmızı görünür.
+
+
+## v5 Güncellemesi
+
+- Cevap sonrası “Kalan/Yanan” özet satırları kaldırıldı.
+- Dağılım tablosundaki “Sonuç” sütunu kaldırıldı.
+- Sadece oyuncu ve A/B/C/D para dağılımları gösterilir.
+- Yayın ekranında 4 oyunculu kullanım için tablo ve şıklar daha kompakt hale getirildi.

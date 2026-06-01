@@ -219,38 +219,29 @@ function renderAllocationMatrix(state){
   if(!results.length) return "";
 
   return `
-    <div class="allocation-matrix-card">
-      <div class="allocation-title">
+    <div class="allocation-matrix-card simple-matrix-card">
+      <div class="allocation-title simple-title">
         <h3>Oyuncu Para Dağılımları</h3>
-        <p class="muted">Cevap açıldıktan sonra herkesin A/B/C/D dağılımı görünür.</p>
       </div>
-      <div class="allocation-matrix">
+      <div class="allocation-matrix simple-allocation-matrix">
         <div class="matrix-head player-col">Oyuncu</div>
         ${letters.map((letter, i)=>`
           <div class="matrix-head option-col ${i === r.correct ? "correct-col" : ""}">
             ${letter}
           </div>
         `).join("")}
-        <div class="matrix-head result-col">Sonuç</div>
 
         ${results.map(x=>{
           const allocation = Array.isArray(x.allocation) ? x.allocation : [0,0,0,0];
           return `
             <div class="matrix-cell player-col player-cell">
               <strong>${escapeHtml(x.name)}</strong>
-              ${x.autoLocked ? `<span class="small burned">Otomatik kilitlendi</span>` : ""}
             </div>
             ${letters.map((letter, i)=>`
               <div class="matrix-cell option-col ${i === r.correct ? "correct-col" : "wrong-col"}">
-                <span class="matrix-letter">${letter}</span>
                 <strong>${money(allocation[i] || 0)}</strong>
-                ${(allocation[i] || 0) > 0 ? moneyNotesHtml(allocation[i], i === r.correct ? "stay" : "fall") : ""}
               </div>
             `).join("")}
-            <div class="matrix-cell result-col">
-              <span class="kept">Kalan: ${money(x.kept)}</span>
-              <span class="burned">Yanan: ${money(x.burned)}</span>
-            </div>
           `;
         }).join("")}
       </div>
@@ -267,19 +258,7 @@ function renderResults(state, containerId="resultsBox"){
   }
   const r = state.lastResults;
   box.innerHTML = `
-    <div class="card reveal-summary-card">
-      <h3>Doğru Cevap: ${letters[r.correct]}) ${escapeHtml(r.correctText)}</h3>
-      <div class="log compact-result-log">
-        ${Object.values(r.results || {}).map(x=>`
-          <div class="log-row">
-            <strong>${escapeHtml(x.name)}</strong> → Kalan:
-            <span class="kept">${money(x.kept)}</span>,
-            Yanan:
-            <span class="burned">${money(x.burned)}</span>
-            ${x.autoLocked ? " • Süre bittiği için otomatik kilitlendi" : ""}
-          </div>
-        `).join("")}
-      </div>
+    <div class="card reveal-summary-card slim-reveal-card">
       ${renderAllocationMatrix(state)}
     </div>
   `;

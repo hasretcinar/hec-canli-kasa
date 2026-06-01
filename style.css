@@ -259,3 +259,155 @@ table{width:100%;border-collapse:collapse}th,td{padding:12px 10px;text-align:lef
     font-size:12px;
   }
 }
+
+
+/* v5 sade sonuç ekranı */
+.slim-reveal-card{
+  margin-top:10px;
+  padding:12px;
+}
+
+.slim-reveal-card .allocation-matrix-card{
+  margin-top:0;
+  padding-top:0;
+  border-top:none;
+}
+
+.simple-title{
+  margin-bottom:8px;
+}
+
+.simple-title h3{
+  font-size:20px;
+  margin:0;
+}
+
+.simple-allocation-matrix{
+  grid-template-columns:minmax(120px,1.05fr) repeat(4,minmax(110px,1fr));
+  gap:7px;
+}
+
+.simple-allocation-matrix .matrix-head,
+.simple-allocation-matrix .matrix-cell{
+  min-height:42px;
+  padding:8px 9px;
+  border-radius:12px;
+}
+
+.simple-allocation-matrix .matrix-head{
+  font-size:16px;
+}
+
+.simple-allocation-matrix .matrix-cell.option-col strong{
+  font-size:16px;
+  color:#ffdd66;
+}
+
+.simple-allocation-matrix .player-cell strong{
+  font-size:16px;
+}
+
+/* Cevap açıldıktan sonra üstteki şıklar da daha kompakt dursun */
+.option-reveal{
+  min-height:104px;
+  padding:12px;
+}
+
+.option-bank{
+  padding:7px 9px;
+  margin-top:6px;
+}
+
+.option-bank span{
+  font-size:11px;
+}
+
+.option-bank strong{
+  font-size:15px;
+}
+
+.question-card{
+  padding-bottom:14px;
+}
+
+.question-card h2{
+  margin-bottom:12px;
+}
+
+.reveal-summary-card + .card{
+  margin-top:8px;
+}
+
+@media(min-width:900px){
+  .screen-fit .content,
+  .content{
+    padding-top:18px;
+  }
+}
+
+@media(max-height:820px) and (min-width:900px){
+  .header{
+    padding:10px 16px;
+  }
+  .content{
+    padding:16px 22px;
+  }
+  .question-card{
+    padding:14px 16px;
+  }
+  .question-card h2{
+    font-size:26px;
+    margin-bottom:10px;
+  }
+  .options{
+    gap:9px;
+  }
+  .option{
+    min-height:78px;
+    padding:10px;
+  }
+  .option-reveal{
+    min-height:92px;
+  }
+  .letter{
+    width:34px;
+    height:34px;
+    font-size:16px;
+  }
+  .option-bank{
+    padding:6px 8px;
+  }
+  .money-notes{
+    transform:scale(.62);
+    transform-origin:bottom right;
+    opacity:.6;
+  }
+  .simple-title h3{
+    font-size:18px;
+  }
+  .simple-allocation-matrix .matrix-head,
+  .simple-allocation-matrix .matrix-cell{
+    min-height:36px;
+    padding:6px 8px;
+  }
+  .simple-allocation-matrix .matrix-head,
+  .simple-allocation-matrix .matrix-cell.option-col strong,
+  .simple-allocation-matrix .player-cell strong{
+    font-size:14px;
+  }
+  .slim-reveal-card{
+    padding:10px;
+  }
+}
+
+@media(max-width:1120px){
+  .simple-allocation-matrix{
+    grid-template-columns:minmax(110px,1fr) repeat(4,minmax(84px,1fr));
+  }
+}
+
+@media(max-width:720px){
+  .simple-allocation-matrix{
+    grid-template-columns:1fr;
+  }
+}
