@@ -906,3 +906,112 @@ table{width:100%;border-collapse:collapse}th,td{padding:12px 10px;text-align:lef
     grid-column:3;
   }
 }
+
+
+/* v11 yayın ekranı düzeltmesi */
+.display-page .contestant-showcase{
+  display:none !important;
+}
+
+.display-page .display-app{
+  width:100% !important;
+  height:calc(100vh - 16px) !important;
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 360px !important;
+  gap:10px !important;
+  overflow:hidden !important;
+}
+
+.display-page .display-main,
+.display-page .display-ranking{
+  min-height:0 !important;
+  height:100% !important;
+}
+
+.display-page .display-ranking{
+  display:flex !important;
+  flex-direction:column !important;
+  opacity:1 !important;
+  visibility:visible !important;
+}
+
+.display-page .display-ranking .side-card{
+  height:auto !important;
+  max-height:100% !important;
+  overflow:hidden !important;
+}
+
+.display-page .display-ranking .side-body{
+  overflow:hidden !important;
+}
+
+.display-page .display-ranking .player-row{
+  display:grid !important;
+  grid-template-columns:26px 42px minmax(0,1fr) auto !important;
+  align-items:center !important;
+  gap:8px !important;
+}
+
+.display-page .display-ranking .score-avatar{
+  width:40px !important;
+  height:40px !important;
+}
+
+.display-page .display-ranking .score-avatar-img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  object-position:center 34% !important;
+  display:block !important;
+}
+
+.display-page .display-ranking .player-row > div:nth-child(3){
+  min-width:0 !important;
+}
+
+.display-page .display-ranking .player-row strong{
+  display:block !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+.display-page .display-ranking .money{
+  white-space:nowrap !important;
+}
+
+/* OBS/kamera için sağ-alt boşluk kalırken sıralama üstte dursun */
+.display-page .display-ranking{
+  padding-bottom:210px !important;
+}
+
+/* Tam ekran uyarı kutusu kısa süre üstte çıkıyor; sıralama onun altında kalmasın */
+.display-page .fullscreen-btn{
+  z-index:100 !important;
+}
+
+@media(max-width:1120px){
+  .display-page .display-app{
+    grid-template-columns:minmax(0,1fr) 330px !important;
+  }
+  .display-page .display-ranking{
+    display:flex !important;
+  }
+}
+
+@media(max-height:760px){
+  .display-page .display-app{
+    grid-template-columns:minmax(0,1fr) 330px !important;
+  }
+  .display-page .display-ranking{
+    padding-bottom:170px !important;
+  }
+  .display-page .display-ranking .player-row{
+    padding:7px !important;
+    grid-template-columns:24px 36px minmax(0,1fr) auto !important;
+  }
+  .display-page .display-ranking .score-avatar{
+    width:34px !important;
+    height:34px !important;
+  }
+}

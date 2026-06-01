@@ -94,3 +94,11 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Oyuncu ekranındaki fotoğraf seçme alanı JavaScript ile avatarOptions listesinden otomatik oluşturulur.
 - Fotoğraflar daha yakın kırpıldı; yüzler daha belirgin hale getirildi.
 - Canlı sıralama satırları avatar + isim + para düzenine göre tekrar hizalandı.
+
+
+## v11 Güncellemesi
+
+- display.html yeniden kuruldu.
+- Yayın ekranında sağdaki Canlı Sıralama paneli tekrar sabitlendi.
+- Eski sol alt portre panelinden kalan yazı/görsel kalıntıları tamamen kaldırıldı.
+- Canlı sıralamada avatar + isim + para görünümü yayın ekranında garanti olacak şekilde CSS ile sabitlendi.
