@@ -128,3 +128,12 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - 9. ve 10. sorular 3 şıklı yapıldı.
 - Şık gösterimleri, mümkün olduğunca mevcut sorudaki seçenek sayısına göre dinamikleştirildi.
 - 5. soru şimdilik görselsiz bırakıldı.
+
+
+## v15 Hata Düzeltmesi
+
+- “Cevabı Aç” sırasında gelen `lastResults.correct undefined` hatası düzeltildi.
+- Yeni soru setinde `answer` alanı desteklendi; cevap açılırken doğru cevap indeksi güvenli biçimde hesaplanıyor.
+- 3 şıklı 9. ve 10. sorularda oyuncu ekranındaki a3/D şıkkı kaynaklı hatalar önlendi.
+- Cevap açıldıktan sonra sonuç tablosu 3 şıklı sorularda sadece A/B/C gösterir.
+- Oyuncu ekranındaki Eşit Böl / Temizle / Hepsi mantığı mevcut soru seçenek sayısına göre çalışır.

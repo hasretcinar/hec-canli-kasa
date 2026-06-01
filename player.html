@@ -92,6 +92,12 @@ let selectedAvatar = "mehmet";
 byId("roomInput").value = roomCode;
 renderAvatarPicker();
 
+
+function currentOptionCount(){
+  const q = publicQuestionForRender(state);
+  return Math.max(1, Math.min(4, Number(q?.options?.length || 4)));
+}
+
 function me(){
   return state?.players?.[playerId] ? { id:playerId, ...state.players[playerId] } : null;
 }
@@ -125,6 +131,7 @@ function renderPlayerQuestion(){
 
   const p = me();
   const showCorrect = state.phase === "revealed";
+  const correctIndex = correctIndexForQuestion(q);
   const disabled = !p || state.phase !== "betting" || p.locked || p.eliminated || Number(p.cash || 0) <= 0;
 
   let media = "";
@@ -134,7 +141,7 @@ function renderPlayerQuestion(){
 
   const opts = q.options.map((opt,i)=>{
     const oldValue = byId(`a${i}`)?.value || 0;
-    const cls = showCorrect ? (i === q.correct ? " correct" : " wrong") : "";
+    const cls = showCorrect ? (i === correctIndex ? " correct" : " wrong") : "";
     return `
       <div class="option bet-option${cls}">
         <div class="bet-option-main">
@@ -224,7 +231,7 @@ function renderMe(){
   byId("meCash").textContent = money(p.cash || 0);
 
   const disabled = state.phase !== "betting" || p.locked || p.eliminated || Number(p.cash || 0) <= 0;
-  [0,1,2,3].forEach(i=>byId(`a${i}`).disabled = disabled);
+  for(let i=0;i<currentOptionCount();i++){ const el = byId(`a${i}`); if(el) el.disabled = disabled; }
   document.querySelectorAll(".quick").forEach(btn=>btn.disabled = disabled);
 
   if(p.eliminated || Number(p.cash || 0) <= 0){
@@ -244,11 +251,18 @@ function renderMe(){
 }
 
 function getBet(){
-  return [0,1,2,3].map(i=>Math.max(0, Math.floor(Number(byId(`a${i}`).value)||0)));
+  return Array.from({length: currentOptionCount()}, (_,i)=>{
+    const el = byId(`a${i}`);
+    return Math.max(0, Math.floor(Number(el?.value)||0));
+  });
 }
 
 function setBet(arr){
-  arr.forEach((v,i)=>byId(`a${i}`).value = Math.max(0, Math.round(v)));
+  const count = currentOptionCount();
+  for(let i=0;i<count;i++){
+    const el = byId(`a${i}`);
+    if(el) el.value = Math.max(0, Math.round(Number(arr[i] || 0)));
+  }
   updateBetTotal();
 }
 
@@ -298,7 +312,7 @@ function updateBetTotal(){
 function putAll(i){
   const p = me();
   if(!p) return;
-  const arr = [0,0,0,0];
+  const arr = Array(currentOptionCount()).fill(0);
   arr[i] = Number(p.cash || 0);
   setBet(arr);
 }
@@ -307,13 +321,14 @@ function splitEven(){
   const p = me();
   if(!p) return;
   const cash = Number(p.cash || 0);
-  const base = Math.floor(cash / 4 / 10000) * 10000;
-  const arr = [base,base,base,base];
+  const count = currentOptionCount();
+  const base = Math.floor(cash / count / 10000) * 10000;
+  const arr = Array(count).fill(base);
   arr[0] += cash - arr.reduce((a,b)=>a+b,0);
   setBet(arr);
 }
 
-function clearBet(){ setBet([0,0,0,0]); }
+function clearBet(){ setBet(Array(currentOptionCount()).fill(0)); }
 
 async function doLock(){
   try{
