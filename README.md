@@ -71,3 +71,10 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Yayın ekranının sol alt boşluğuna 4 yarışmacının küçük portre kartları eklendi.
 - Görseller yüklenen kaynaklardan kırpılarak hazırlandı.
 - Portreler dekoratif amaçlıdır ve yayın görüntüsünü zenginleştirir.
+
+
+## v8 Fotoğraf Düzeltmesi
+
+- Yarışmacı portreleri artık ayrı dosya yolundan değil, doğrudan `display.html` içine gömülü (base64 data URI) olarak gelir.
+- Böylece GitHub’a `assets/contestants` klasörü eksik yüklense bile fotoğraflar görünür.
+- Güncellemeden sonra tarayıcı eski sürümü tutarsa `Ctrl+F5` ile sert yenileme önerilir.
