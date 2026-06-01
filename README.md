@@ -130,10 +130,10 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - 5. soru şimdilik görselsiz bırakıldı.
 
 
-## v15 Hata Düzeltmesi
+## v16 Hata Düzeltmesi
 
-- “Cevabı Aç” sırasında gelen `lastResults.correct undefined` hatası düzeltildi.
-- Yeni soru setinde `answer` alanı desteklendi; cevap açılırken doğru cevap indeksi güvenli biçimde hesaplanıyor.
-- 3 şıklı 9. ve 10. sorularda oyuncu ekranındaki a3/D şıkkı kaynaklı hatalar önlendi.
-- Cevap açıldıktan sonra sonuç tablosu 3 şıklı sorularda sadece A/B/C gösterir.
-- Oyuncu ekranındaki Eşit Böl / Temizle / Hepsi mantığı mevcut soru seçenek sayısına göre çalışır.
+- v15te Oyunu Başlatı bozan correctIndexForQuestion hatası temizlendi.
+- v14teki sağlam sürümden tekrar üretildi.
+- answer ve correct alanları birlikte destekleniyor.
+- Cevabı Aç sırasında Firebasee undefined yazma hatası düzeltildi.
+- 9. ve 10. sorularda 3 şık sistemi oyuncu, moderatör ve yayın ekranında güvenli hale getirildi.

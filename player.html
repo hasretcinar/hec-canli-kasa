@@ -92,7 +92,6 @@ let selectedAvatar = "mehmet";
 byId("roomInput").value = roomCode;
 renderAvatarPicker();
 
-
 function currentOptionCount(){
   const q = publicQuestionForRender(state);
   return Math.max(1, Math.min(4, Number(q?.options?.length || 4)));
@@ -231,7 +230,10 @@ function renderMe(){
   byId("meCash").textContent = money(p.cash || 0);
 
   const disabled = state.phase !== "betting" || p.locked || p.eliminated || Number(p.cash || 0) <= 0;
-  for(let i=0;i<currentOptionCount();i++){ const el = byId(`a${i}`); if(el) el.disabled = disabled; }
+  for(let i=0;i<currentOptionCount();i++){
+    const el = byId(`a${i}`);
+    if(el) el.disabled = disabled;
+  }
   document.querySelectorAll(".quick").forEach(btn=>btn.disabled = disabled);
 
   if(p.eliminated || Number(p.cash || 0) <= 0){
@@ -253,7 +255,7 @@ function renderMe(){
 function getBet(){
   return Array.from({length: currentOptionCount()}, (_,i)=>{
     const el = byId(`a${i}`);
-    return Math.max(0, Math.floor(Number(el?.value)||0));
+    return Math.max(0, Math.floor(Number(el?.value) || 0));
   });
 }
 
@@ -305,7 +307,8 @@ function updateBetTotal(){
     status.textContent = `${money(Number(p.cash || 0) - total)} eksik`;
     status.className = "burned";
   }
-  byId("lockBtn").disabled = state?.phase !== "betting" || p.locked || p.eliminated || total !== Number(p.cash || 0);
+  const lockBtn = byId("lockBtn");
+  if(lockBtn) lockBtn.disabled = state?.phase !== "betting" || p.locked || p.eliminated || total !== Number(p.cash || 0);
   updateMoneyStacks();
 }
 
