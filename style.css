@@ -1460,3 +1460,82 @@ body:not(.display-page):not(.player-page) .media video{
     grid-template-columns:1fr !important;
   }
 }
+
+
+/* v18 kesin süre göstergesi düzeltmesi */
+.header{
+  position:relative !important;
+}
+
+.center-timer{
+  position:absolute !important;
+  left:50% !important;
+  top:50% !important;
+  transform:translate(-50%,-50%) !important;
+  z-index:80 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:9px !important;
+  min-width:185px !important;
+  padding:10px 20px !important;
+  border-radius:999px !important;
+  border:1px solid rgba(255,255,255,.24) !important;
+  background:linear-gradient(135deg,rgba(5,18,55,.98),rgba(12,42,105,.94)) !important;
+  box-shadow:0 10px 30px rgba(0,0,0,.38),0 0 28px rgba(255,204,51,.18) !important;
+  color:#dce6ff !important;
+  pointer-events:none !important;
+  white-space:nowrap !important;
+}
+
+.center-timer span{
+  font-size:13px !important;
+  font-weight:900 !important;
+  color:#b8c9ff !important;
+  letter-spacing:.25px !important;
+}
+
+.center-timer strong{
+  font-size:22px !important;
+  line-height:1 !important;
+  color:var(--gold) !important;
+  font-weight:1000 !important;
+  text-shadow:0 0 16px rgba(255,204,51,.25) !important;
+}
+
+.header .status{
+  padding-right:150px !important;
+}
+
+/* Eski sağ/üst timer kalıntısı varsa tamamen gizle */
+.top-timer{
+  display:none !important;
+}
+
+@media(max-width:1050px){
+  .center-timer{
+    min-width:150px !important;
+    padding:8px 14px !important;
+  }
+  .center-timer span{
+    display:none !important;
+  }
+  .center-timer strong{
+    font-size:20px !important;
+  }
+}
+
+@media(max-width:720px){
+  .center-timer{
+    position:static !important;
+    transform:none !important;
+    margin:8px auto 0 !important;
+    width:max-content !important;
+  }
+  .header{
+    flex-wrap:wrap !important;
+  }
+  .header .status{
+    padding-right:0 !important;
+  }
+}

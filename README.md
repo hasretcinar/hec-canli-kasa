@@ -137,3 +137,14 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - answer ve correct alanları birlikte destekleniyor.
 - Cevabı Aç sırasında Firebasee undefined yazma hatası düzeltildi.
 - 9. ve 10. sorularda 3 şık sistemi oyuncu, moderatör ve yayın ekranında güvenli hale getirildi.
+
+
+## v18 Güncellemesi
+
+- Süre göstergesi sağ üst durum satırından tamamen çıkarıldı.
+- Süre artık header'ın tam orta kısmında büyük bir rozet olarak görünür.
+- Tam ekran butonuyla çakışmaması için ayrı konumlandırıldı.
+- 5. soru kesin olarak değiştirildi:
+  “Güneş Sistemi’nin en sıcak gezegeni hangisidir?”
+  A) Merkür, B) Venüs, C) Mars, D) Jüpiter
+  Doğru cevap: B) Venüs
