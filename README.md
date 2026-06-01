@@ -102,3 +102,12 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Yayın ekranında sağdaki Canlı Sıralama paneli tekrar sabitlendi.
 - Eski sol alt portre panelinden kalan yazı/görsel kalıntıları tamamen kaldırıldı.
 - Canlı sıralamada avatar + isim + para görünümü yayın ekranında garanti olacak şekilde CSS ile sabitlendi.
+
+
+## v12 Güncellemesi
+
+- Görselli soru görselleri artık `game.js` içine base64 olarak gömüldü; assets yolu bozulsa bile görünür.
+- Demo ses dosyası da gömüldü.
+- Oyuncu ekranı tam ekran kullanım için daha kompakt hale getirildi.
+- Para kutuları, şık kartları ve görsel/ses medya alanları küçültüldü.
+- Yayın ekranında görsel soru medya alanı ekranı şişirmeyecek şekilde sınırlandı.
