@@ -220,9 +220,6 @@ function renderAllocationMatrix(state){
 
   return `
     <div class="allocation-matrix-card simple-matrix-card">
-      <div class="allocation-title simple-title">
-        <h3>Oyuncu Para Dağılımları</h3>
-      </div>
       <div class="allocation-matrix simple-allocation-matrix">
         <div class="matrix-head player-col">Oyuncu</div>
         ${letters.map((letter, i)=>`
@@ -256,9 +253,9 @@ function renderResults(state, containerId="resultsBox"){
     box.innerHTML = "";
     return;
   }
-  const r = state.lastResults;
+
   box.innerHTML = `
-    <div class="card reveal-summary-card slim-reveal-card">
+    <div class="card reveal-summary-card slim-reveal-card only-matrix-card">
       ${renderAllocationMatrix(state)}
     </div>
   `;

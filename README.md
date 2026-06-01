@@ -57,3 +57,10 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Dağılım tablosundaki “Sonuç” sütunu kaldırıldı.
 - Sadece oyuncu ve A/B/C/D para dağılımları gösterilir.
 - Yayın ekranında 4 oyunculu kullanım için tablo ve şıklar daha kompakt hale getirildi.
+
+
+## v6 Güncellemesi
+
+- Cevap sonrası “Doğru Cevap” başlığı ve kalan/yanan özet satırları tamamen kaldırıldı.
+- Oyuncu Para Dağılımları tablosunda “Sonuç” sütunu yoktur.
+- Yayın ekranı için özel compact CSS eklendi; tam ekranda 4 oyunculu tabloda kaydırma ihtiyacını azaltacak şekilde küçültüldü.
