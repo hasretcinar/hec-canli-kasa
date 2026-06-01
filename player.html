@@ -131,7 +131,7 @@ function renderPlayerQuestion(){
   const p = me();
   const showCorrect = state.phase === "revealed";
   const correctIndex = correctIndexForQuestion(q);
-  const disabled = !p || state.phase !== "betting" || p.locked || p.eliminated || Number(p.cash || 0) <= 0;
+  const disabled = !p || !isBettingOpen(state) || p.locked || p.eliminated || Number(p.cash || 0) <= 0;
 
   let media = "";
   if(q.image) media += `<div class="media compact-media"><img src="${q.image}" alt="Görselli soru"></div>`;
@@ -170,7 +170,7 @@ function renderPlayerQuestion(){
       </div>
       ${media}
       <h2>${q.question}</h2>
-      <div class="options player-options">${opts}</div>
+      <div class="options player-options option-count-${q.options.length}">${opts}</div>
     </div>
   `;
   updateBetTotal();

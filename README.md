@@ -175,3 +175,14 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Oyuncu ekranında süre bittiği anda inputlar ve Gizli Kilitle pasif hale gelir.
 - 5. sorudaki Güneş Sistemi görseli korunur.
 - Cache kırıcı sürüm v=21 yapıldı.
+
+
+## v22 Güncellemesi
+
+- 3 şıklı sorularda D alanı/boşluk/kayma problemi düzeltildi.
+- 3 ve 4 şıklı sorular için option-count sınıfları eklendi.
+- Oyuncu ekranındaki para yazma, Hepsi ve Gizli Kilitle alanları 4 oyunculu kullanım için sıkıştırıldı.
+- Yayın ekranında cevap açıklandıktan sonra 4 kişilik sonuç matrisi alta taşmayacak şekilde küçültüldü.
+- Yayın ekranında reveal modunda soru kartı, görsel, şıklar ve sonuç tablosu birlikte sığacak şekilde ayarlandı.
+- Moderatör ekranında 3 şıklı sorularda sonuç matrisi ve seçenek düzeni sıkıştırıldı.
+- Cache kırıcı sürüm v=22 yapıldı.
