@@ -42,3 +42,10 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Oyuncu para yazdıkça ilgili şık kutusunda para destesi oluşur.
 - Cevap açıklandığında yayın/moderatör ekranında doğru şıktaki para kalır, yanlış şıklardaki para düşme/yok olma animasyonu gösterir.
 - Sesli sorular için yayın ekranında audio player görünür. Tarayıcı otomatik ses çalmayı engelleyebileceği için yayıncı/operatörün player üzerinden sesi başlatması gerekebilir.
+
+
+## v4 Güncellemesi
+
+- Cevap açıldıktan sonra yayın/moderatör/oyuncu ekranında oyuncu bazlı A-B-C-D para dağılım tablosu görünür.
+- Her oyuncunun A, B, C ve D şıklarına kaç TL koyduğu aynı hizalı sütunlarda gösterilir.
+- Doğru sütun yeşil, yanlış sütunlar sönük/kırmızı görünür.
