@@ -2684,3 +2684,264 @@ body:not(.display-page):not(.player-page) .media video{
   animation:revealWrongShake .55s ease both;
   animation-delay:var(--reveal-delay,0s);
 }
+
+/* v25 düzenlemeleri */
+.player-page .me-head{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+}
+
+.player-page .me-avatar{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  overflow:hidden;
+  flex:0 0 52px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:2px solid rgba(255,255,255,.22);
+  background:linear-gradient(135deg, rgba(255,204,51,.22), rgba(99,212,230,.18));
+  box-shadow:0 8px 20px rgba(0,0,0,.24);
+}
+
+.player-page .me-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 32%;
+  display:block;
+}
+
+.player-page .me-avatar span{
+  font-weight:1000;
+  font-size:22px;
+  color:var(--gold);
+}
+
+.player-page .player-top-card{
+  grid-template-columns:minmax(0,1.2fr) auto minmax(0,1fr) !important;
+}
+
+.player-page .player-top-card > div{
+  min-width:0;
+}
+
+.player-page .player-top-card h2{
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.player-page .bet-option.reveal-compact{
+  min-height:102px !important;
+  justify-content:flex-start;
+}
+
+.player-page .player-reveal-inline{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:8px;
+  padding:8px 10px;
+  border-radius:12px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+}
+
+.player-page .player-reveal-inline span{
+  font-size:12px;
+  color:#cddcff;
+  font-weight:700;
+}
+
+.player-page .player-reveal-inline strong{
+  font-size:15px;
+  color:#fff5bc;
+}
+
+.answer-reveal-banner{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  text-align:center;
+}
+
+.answer-reveal-banner strong{
+  font-size:clamp(16px,1.4vw,24px);
+  font-weight:1000;
+  color:#fff9d5;
+}
+
+.answer-reveal-kicker{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:7px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.18);
+  color:#dffff0;
+  font-size:12px;
+  font-weight:1000;
+  text-transform:uppercase;
+  letter-spacing:.35px;
+}
+
+.display-page .answer-reveal-banner,
+.moderator-page .answer-reveal-banner{
+  padding:12px 18px;
+  border-radius:18px;
+}
+
+.display-page.final-mode .winner-stage{
+  min-height:calc(100vh - 110px) !important;
+  padding:18px 18px 14px !important;
+  justify-content:flex-start !important;
+}
+
+.display-page.final-mode .winner-glow{
+  top:31%;
+  width:360px;
+  height:360px;
+}
+
+.display-page.final-mode .winner-avatar-wrap{
+  width:clamp(118px,13vw,175px);
+  height:clamp(118px,13vw,175px);
+  border-width:5px;
+  box-shadow:0 0 0 6px rgba(255,204,51,.18),0 0 32px rgba(255,204,51,.45),0 16px 40px rgba(0,0,0,.48);
+}
+
+.display-page.final-mode .final-kicker{
+  margin-bottom:8px !important;
+  font-size:clamp(12px,1vw,17px) !important;
+}
+
+.display-page.final-mode .winner-name{
+  margin:12px 0 2px !important;
+  font-size:clamp(34px,4.2vw,62px) !important;
+}
+
+.display-page.final-mode .winner-money{
+  margin:6px 0 12px;
+  padding:8px 20px;
+  font-size:clamp(22px,2.6vw,38px);
+}
+
+.display-page.final-mode .final-list-compact{
+  width:min(840px,98%);
+  gap:6px;
+  margin-top:0;
+}
+
+.display-page.final-mode .final-row{
+  padding:7px 10px;
+  border-radius:14px;
+  grid-template-columns:36px minmax(0,1fr) auto;
+}
+
+.display-page.final-mode .final-row strong{
+  font-size:16px;
+}
+
+.display-page.final-mode .final-row .small{
+  font-size:12px;
+  line-height:1.2;
+}
+
+.display-page.final-mode .final-medal{
+  width:30px;
+  height:30px;
+}
+
+.moderator-page.final-mode .winner-stage{
+  padding:14px !important;
+  justify-content:flex-start !important;
+}
+
+.moderator-page.final-mode .winner-avatar-wrap{
+  width:112px;
+  height:112px;
+}
+
+.moderator-page.final-mode .winner-name{
+  font-size:30px !important;
+  margin-top:10px !important;
+}
+
+.moderator-page.final-mode .winner-money{
+  margin:4px 0 10px;
+  padding:7px 16px;
+}
+
+.moderator-page.final-mode .final-list-compact{
+  gap:5px;
+  max-height:none;
+}
+
+.moderator-page.final-mode .final-row{
+  padding:7px 10px;
+}
+
+.moderator-page #modArea > .card:last-child{
+  position:sticky;
+  bottom:0;
+  z-index:6;
+  background:linear-gradient(180deg, rgba(1,12,43,.96), rgba(2,18,58,.98)) !important;
+}
+
+@media(max-height:820px) and (min-width:980px){
+  .display-page.final-mode .winner-avatar-wrap{
+    width:128px;
+    height:128px;
+  }
+  .display-page.final-mode .winner-name{
+    font-size:clamp(30px,3.7vw,52px) !important;
+  }
+  .display-page.final-mode .winner-money{
+    font-size:clamp(20px,2.3vw,34px);
+  }
+  .display-page.final-mode .final-row strong{
+    font-size:15px;
+  }
+  .display-page.final-mode .final-row .small{
+    font-size:11px;
+  }
+}
+
+@media(max-height:760px) and (min-width:900px){
+  .player-page .me-avatar{
+    width:44px;
+    height:44px;
+    flex-basis:44px;
+  }
+  .player-page .player-top-card{
+    grid-template-columns:minmax(0,1.15fr) auto minmax(0,1fr) !important;
+  }
+  .player-page .player-reveal-inline{
+    padding:6px 8px;
+  }
+  .player-page .player-reveal-inline strong{
+    font-size:14px;
+  }
+}
+
+@media(max-width:720px){
+  .answer-reveal-banner{
+    flex-direction:column;
+    gap:8px;
+  }
+  .player-page .me-head{
+    gap:10px;
+  }
+  .player-page .me-avatar{
+    width:44px;
+    height:44px;
+    flex-basis:44px;
+  }
+}
