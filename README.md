@@ -199,10 +199,15 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Cache kırıcı sürüm v=23 yapıldı.
 
 
-## v25.1 Timer10 Güvenli Güncelleme
+## v25y1 Güvenli Güncelleme
 
-- V25 çalışan sürüm baz alındı.
-- Sadece süre uyarısı değiştirildi.
-- Kalan süre 10 saniyeye düşünce renk/yanıp sönme uyarısı başlar.
-- Ses/geçiş denemesi eklenmedi; Netlify stabil kalması hedeflendi.
-- Cache kırıcı v=251 yapıldı.
+- Çalışan v25 sürümü baz alınmıştır.
+- Süre uyarısı 5 saniye yerine 10 saniye kala başlar.
+- Moderatör paneline oyuncu yönetimi eklenmiştir:
+  - Oyuncu silme
+  - Oyuncu ismini düzeltme
+  - Oyuncu parasını düzeltme
+  - Oyuncu fotoğrafını değiştirme
+  - Oyuncunun kilidini/dağıtımını temizleme
+- Ses/geçiş denemeleri yoktur.
+- Cache kırıcı sürüm `v=25y1` olarak ayarlanmıştır.

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moderatör - Demode TV Canlı Kasa</title>
-  <link rel="stylesheet" href="style.css?v=251">
+  <link rel="stylesheet" href="style.css?v=25y1">
 </head>
 <body class="moderator-page">
 <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Tam Ekran</button>
@@ -64,6 +64,14 @@
       <div id="questionArea"></div>
       <div id="resultsBox"></div>
 
+      <div class="card moderator-manage-card">
+        <div class="manage-title-row">
+          <h3>Oyuncu Yönetimi</h3>
+          <span class="small">İsim, para, fotoğraf ve oyuncu temizleme</span>
+        </div>
+        <div id="playerManageBox" class="player-manage-box"></div>
+      </div>
+
       <div class="card">
         <h3>Oyun Kontrolleri</h3>
         <div class="actions">
@@ -87,8 +95,8 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-<script src="firebase-config.js?v=251"></script>
-<script src="game.js?v=251"></script>
+<script src="firebase-config.js?v=25y1"></script>
+<script src="game.js?v=25y1"></script>
 <script>
 let roomCode = qs("room") || null;
 let state = null;
@@ -114,6 +122,7 @@ function listenRoom(code){
     renderQuestion(state);
     renderPlayers(state);
     renderResults(state);
+    renderPlayerManagement(state);
   });
 }
 
@@ -133,6 +142,85 @@ function joinExistingRoom(){
   showModArea(roomCode);
   listenRoom(roomCode);
 }
+
+
+function renderPlayerManagement(state){
+  const box = byId("playerManageBox");
+  if(!box) return;
+
+  const arr = playersArray(state);
+  if(!arr.length){
+    box.innerHTML = `<p class="muted">Henüz oyuncu yok.</p>`;
+    return;
+  }
+
+  box.innerHTML = arr.map(p=>{
+    const av = avatarById(p.avatar || "");
+    const avatarHtml = av
+      ? `<img src="${av.src}" alt="${escapeHtml(p.name || av.name)}">`
+      : `<span>${escapeHtml(String(p.name || "?").slice(0,1).toUpperCase())}</span>`;
+
+    const avatarOptionsHtml = avatarOptions.map(a=>`
+      <option value="${a.id}" ${a.id === (p.avatar || "") ? "selected" : ""}>${escapeHtml(a.name)}</option>
+    `).join("");
+
+    return `
+      <div class="manage-player-row" data-player-id="${p.id}">
+        <div class="manage-avatar">${avatarHtml}</div>
+
+        <div class="manage-fields">
+          <input class="manage-name" value="${escapeHtml(p.name || "")}" title="Oyuncu adı">
+          <input class="manage-cash" type="number" min="0" step="10000" value="${Number(p.cash || 0)}" title="Oyuncu parası">
+          <select class="manage-avatar-select" title="Fotoğraf">
+            ${avatarOptionsHtml}
+          </select>
+        </div>
+
+        <div class="manage-actions">
+          <button class="btn secondary mini-manage" onclick="doUpdatePlayer('${p.id}')">Kaydet</button>
+          <button class="btn secondary mini-manage" onclick="doClearBet('${p.id}')">Kilidi Aç</button>
+          <button class="btn danger mini-manage" onclick="doDeletePlayer('${p.id}', '${escapeHtml(p.name || "Oyuncu")}')">Sil</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+async function doUpdatePlayer(playerId){
+  const row = document.querySelector(`.manage-player-row[data-player-id="${playerId}"]`);
+  if(!row) return;
+
+  const name = row.querySelector(".manage-name").value;
+  const cash = row.querySelector(".manage-cash").value;
+  const avatar = row.querySelector(".manage-avatar-select").value;
+
+  try{
+    await updatePlayerName(roomCode, playerId, name);
+    await updatePlayerCash(roomCode, playerId, cash);
+    await updatePlayerAvatar(roomCode, playerId, avatar);
+  }catch(e){
+    alert(e.message);
+  }
+}
+
+async function doDeletePlayer(playerId, name){
+  if(!confirm(`${name} adlı oyuncuyu odadan silmek istiyor musun?`)) return;
+  try{
+    await deletePlayer(roomCode, playerId);
+  }catch(e){
+    alert(e.message);
+  }
+}
+
+async function doClearBet(playerId){
+  if(!confirm("Bu oyuncunun bu soru için kilidini/dağıtımını temizlemek istiyor musun?")) return;
+  try{
+    await clearPlayerBet(roomCode, playerId);
+  }catch(e){
+    alert(e.message);
+  }
+}
+
 
 async function doStartGame(){
   try{ await startGame(roomCode, Number(byId("durationInput").value) || 45); }
