@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Oyuncu - Demode TV Canlı Kasa</title>
-  <link rel="stylesheet" href="style.css?v=23">
+  <link rel="stylesheet" href="style.css?v=24">
 </head>
 <body class="player-page">
 <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Tam Ekran</button>
@@ -80,8 +80,8 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-<script src="firebase-config.js?v=23"></script>
-<script src="game.js?v=23"></script>
+<script src="firebase-config.js?v=24"></script>
+<script src="game.js?v=24"></script>
 <script>
 let roomCode = qs("room") || "";
 let playerId = null;
@@ -140,13 +140,16 @@ function renderPlayerQuestion(){
 
   const opts = q.options.map((opt,i)=>{
     const oldValue = byId(`a${i}`)?.value || 0;
-    const cls = showCorrect ? (i === correctIndex ? " correct" : " wrong") : "";
+    const isCorrect = showCorrect && i === correctIndex;
+    const cls = showCorrect ? (isCorrect ? " correct" : " wrong") : "";
+    const resultTag = showCorrect ? `<div class="option-result-tag ${isCorrect ? "tag-correct" : "tag-wrong"}">${isCorrect ? "KASA KALDI" : "YANDI"}</div>` : "";
     return `
-      <div class="option bet-option${cls}">
+      <div class="option bet-option${cls}" style="--reveal-delay:${(i * 0.08).toFixed(2)}s">
         <div class="bet-option-main">
           <span class="letter">${letters[i]}</span>
           <strong>${escapeHtml(opt)}</strong>
         </div>
+        ${resultTag}
         <div class="player-money-visual">
           <div class="money-stack" id="stack${i}"></div>
           <div class="stack-label" id="stackLabel${i}">0 TL</div>
@@ -159,8 +162,10 @@ function renderPlayerQuestion(){
     `;
   }).join("");
 
+  const revealBanner = showCorrect ? `<div class="answer-reveal-banner">Doğru cevap: ${letters[correctIndex]} • ${escapeHtml(q.options[correctIndex])}</div>` : "";
+
   area.innerHTML = `
-    <div class="card question-card player-question-card">
+    <div class="card question-card player-question-card ${showCorrect ? "reveal-stage" : ""}">
       <div class="player-question-head">
         <div>
           <div class="badge">Soru ${q.index+1} / ${q.total}</div>
@@ -170,6 +175,7 @@ function renderPlayerQuestion(){
       </div>
       ${media}
       <h2>${q.question}</h2>
+      ${revealBanner}
       <div class="options player-options option-count-${q.options.length}">${opts}</div>
     </div>
   `;
