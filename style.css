@@ -3197,3 +3197,291 @@ body:not(.display-page):not(.player-page) .media video{
     font-size:13px;
   }
 }
+
+
+/* v25y3 - oyuncu ekranı sabit soru kartı düzeni */
+.player-page .player-content{
+  height:calc(100vh - 76px) !important;
+  display:grid !important;
+  grid-template-rows:auto minmax(0,1fr) auto auto !important;
+  gap:8px !important;
+  overflow:hidden !important;
+}
+
+.player-page #questionArea{
+  height:100% !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+}
+
+.player-page .player-question-card{
+  height:100% !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+  display:grid !important;
+  grid-template-rows:auto minmax(120px, 24vh) minmax(58px, auto) auto minmax(128px, auto) !important;
+  gap:8px !important;
+  align-content:stretch !important;
+  padding:10px 14px !important;
+  box-sizing:border-box !important;
+}
+
+.player-page .player-question-head{
+  min-height:42px !important;
+  margin:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+}
+
+.player-page .fixed-question-media,
+.player-page .compact-media{
+  height:clamp(130px, 24vh, 245px) !important;
+  min-height:0 !important;
+  width:100% !important;
+  margin:0 auto !important;
+  padding:6px !important;
+  border-radius:18px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  background:rgba(0,12,42,.38) !important;
+  border:1px solid rgba(99,212,230,.20) !important;
+  overflow:hidden !important;
+  box-sizing:border-box !important;
+}
+
+.player-page .fixed-question-media img,
+.player-page .fixed-question-media video,
+.player-page .compact-media img,
+.player-page .compact-media video{
+  width:auto !important;
+  height:auto !important;
+  max-width:100% !important;
+  max-height:100% !important;
+  min-height:0 !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  margin:0 auto !important;
+  padding:0 !important;
+  border-radius:14px !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+
+.player-page .fixed-question-media audio,
+.player-page .compact-media audio{
+  width:min(720px,90%) !important;
+  margin:0 !important;
+}
+
+.player-page .empty-media{
+  color:rgba(255,255,255,.34) !important;
+  font-weight:1000 !important;
+  letter-spacing:1.5px !important;
+  font-size:clamp(18px,2vw,30px) !important;
+}
+
+.player-page .player-question-text{
+  min-height:58px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  padding:4px 12px !important;
+  border-radius:16px !important;
+  background:rgba(255,255,255,.035) !important;
+  border:1px solid rgba(255,255,255,.07) !important;
+  overflow:hidden !important;
+}
+
+.player-page .player-question-text h2{
+  margin:0 !important;
+  width:100% !important;
+  font-size:clamp(19px, 2.15vw, 30px) !important;
+  line-height:1.14 !important;
+  max-height:calc(1.14em * 3) !important;
+  overflow:hidden !important;
+  display:-webkit-box !important;
+  -webkit-line-clamp:3 !important;
+  -webkit-box-orient:vertical !important;
+}
+
+.player-page .answer-reveal-banner,
+.player-page .locked-notice{
+  margin:0 !important;
+  min-height:42px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+
+.player-page .player-options{
+  align-self:stretch !important;
+  min-height:128px !important;
+  display:grid !important;
+  gap:8px !important;
+  margin-top:0 !important;
+}
+
+.player-page .player-options.option-count-4{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+}
+
+.player-page .player-options.option-count-3{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+}
+
+.player-page .bet-option{
+  height:100% !important;
+  min-height:128px !important;
+  max-height:100% !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:space-between !important;
+  padding:8px !important;
+  gap:5px !important;
+  box-sizing:border-box !important;
+}
+
+.player-page .bet-option-main{
+  min-height:36px !important;
+  display:flex !important;
+  align-items:center !important;
+}
+
+.player-page .bet-option-main strong{
+  font-size:clamp(13px,1.12vw,16px) !important;
+  line-height:1.12 !important;
+  max-height:calc(1.12em * 2) !important;
+  overflow:hidden !important;
+  display:-webkit-box !important;
+  -webkit-line-clamp:2 !important;
+  -webkit-box-orient:vertical !important;
+}
+
+.player-page .player-money-visual{
+  flex:1 1 auto !important;
+  min-height:42px !important;
+}
+
+.player-page .bet-input-row{
+  flex:0 0 auto !important;
+}
+
+.player-page .compact-betbar{
+  flex:0 0 auto !important;
+}
+
+.player-page .bet-option.reveal-compact{
+  min-height:128px !important;
+  justify-content:center !important;
+}
+
+.player-page .player-reveal-inline{
+  width:100% !important;
+  margin-top:8px !important;
+}
+
+@media(max-height:820px) and (min-width:900px){
+  .player-page .player-content{
+    gap:6px !important;
+  }
+
+  .player-page .player-question-card{
+    grid-template-rows:auto minmax(92px, 20vh) minmax(48px, auto) auto minmax(108px, auto) !important;
+    gap:6px !important;
+    padding:8px 12px !important;
+  }
+
+  .player-page .fixed-question-media,
+  .player-page .compact-media{
+    height:clamp(92px, 20vh, 185px) !important;
+    padding:5px !important;
+  }
+
+  .player-page .player-question-text{
+    min-height:48px !important;
+    padding:3px 10px !important;
+  }
+
+  .player-page .player-question-text h2{
+    font-size:clamp(17px, 2vw, 24px) !important;
+  }
+
+  .player-page .player-options{
+    min-height:108px !important;
+  }
+
+  .player-page .bet-option{
+    min-height:108px !important;
+    padding:7px !important;
+  }
+
+  .player-page .player-money-visual{
+    min-height:34px !important;
+  }
+
+  .player-page .bet-input-row input,
+  .player-page .mini-all{
+    min-height:30px !important;
+  }
+}
+
+@media(max-height:720px) and (min-width:900px){
+  .player-page .player-question-card{
+    grid-template-rows:auto minmax(76px, 17vh) minmax(42px, auto) auto minmax(94px, auto) !important;
+  }
+
+  .player-page .fixed-question-media,
+  .player-page .compact-media{
+    height:clamp(76px, 17vh, 140px) !important;
+  }
+
+  .player-page .player-question-text{
+    min-height:42px !important;
+  }
+
+  .player-page .player-question-text h2{
+    font-size:clamp(15px, 1.75vw, 21px) !important;
+    -webkit-line-clamp:2 !important;
+  }
+
+  .player-page .player-options{
+    min-height:94px !important;
+  }
+
+  .player-page .bet-option{
+    min-height:94px !important;
+  }
+
+  .player-page .player-money-visual{
+    display:none !important;
+  }
+}
+
+@media(max-width:720px){
+  .player-page .player-content,
+  .player-page #questionArea,
+  .player-page .player-question-card{
+    height:auto !important;
+    overflow:visible !important;
+    display:block !important;
+  }
+
+  .player-page .fixed-question-media,
+  .player-page .compact-media{
+    height:190px !important;
+    margin-bottom:10px !important;
+  }
+
+  .player-page .player-question-text{
+    min-height:auto !important;
+    margin-bottom:10px !important;
+  }
+
+  .player-page .player-options.option-count-3,
+  .player-page .player-options.option-count-4{
+    grid-template-columns:1fr !important;
+  }
+}

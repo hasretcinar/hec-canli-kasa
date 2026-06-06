@@ -227,3 +227,13 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Cevap açıklanınca lider kartı kısa süre parlar.
 - Moderatör paneline “Tüm Oyuncuları Sil” ve “Elenenleri Sil” eklendi.
 - Cache kırıcı sürüm `v=25y2` olarak ayarlanmıştır.
+
+## v25y3 Güvenli Güncelleme
+
+- Çalışan v25y2 sürümü baz alınmıştır.
+- Oyuncu ekranındaki soru kartı sabit düzene alındı.
+- Görsel alanı, soru yazısı alanı ve şık alanı her soruda aynı kalacak şekilde ayarlandı.
+- Görsel oranı farklı olsa bile görsel sabit alan içinde ortalanır.
+- Uzun soru metinleri sabit soru yazısı alanına göre sığdırılır.
+- Şık kartlarının boyutu sabit tutulur.
+- Cache kırıcı sürüm `v=25y3` olarak ayarlanmıştır.
