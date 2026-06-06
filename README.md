@@ -198,14 +198,9 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Moderatör paneline “Final Ekranını Göster” butonu eklendi.
 - Cache kırıcı sürüm v=23 yapıldı.
 
-## v26 Güncellemesi
+## v27 Stable Güncellemesi
 
-- Ses efektleri eklendi.
-- Sesi başlatmak için ekrana “Sesi Aç” butonu eklendi.
-- Son 5 saniyede tik sesi çalar.
-- Süre bittiğinde kısa uyarı sesi çalar.
-- Cevap açıklanınca efekt sesi çalar.
-- Final ekranında kazanan efekti sesi çalar.
-- Yayın ekranında soru geçişi için kısa “Soru geliyor” animasyonu eklendi.
-- Sesler Web Audio API ile üretildi; dış ses dosyası/telifli kaynak kullanılmadı.
-- Cache kırıcı sürüm v=26 yapıldı.
+- v25 ekran düzeni korunarak Netlify için temiz/stabil sürüm hazırlandı.
+- v26'daki deneysel ses ve geçiş katmanı kaldırıldı.
+- Cache kırıcı sürüm v=27 yapıldı.
+- Moderatör, oyuncu ve yayın ekranları normal tıklanabilir akışa döndürüldü.
