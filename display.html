@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Yayın Ekranı - Demode TV Canlı Kasa</title>
-  <link rel="stylesheet" href="style.css?v=25">
+  <link rel="stylesheet" href="style.css?v=26">
 </head>
 <body class="display-page">
 <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Tam Ekran</button>
+<button class="sound-btn" onclick="enableGameAudio(this)">🔊 Sesi Aç</button>
 
 <div class="app display-app">
   <main class="panel main-panel display-main">
@@ -36,8 +37,8 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-<script src="firebase-config.js?v=25"></script>
-<script src="game.js?v=25"></script>
+<script src="firebase-config.js?v=26"></script>
+<script src="game.js?v=26"></script>
 <script>
 let roomCode = qs("room") || prompt("Yayın ekranı için oda kodu:");
 let state = null;

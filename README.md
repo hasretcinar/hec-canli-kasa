@@ -197,3 +197,15 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Final sıralaması ekranda kompakt şekilde kalır.
 - Moderatör paneline “Final Ekranını Göster” butonu eklendi.
 - Cache kırıcı sürüm v=23 yapıldı.
+
+## v26 Güncellemesi
+
+- Ses efektleri eklendi.
+- Sesi başlatmak için ekrana “Sesi Aç” butonu eklendi.
+- Son 5 saniyede tik sesi çalar.
+- Süre bittiğinde kısa uyarı sesi çalar.
+- Cevap açıklanınca efekt sesi çalar.
+- Final ekranında kazanan efekti sesi çalar.
+- Yayın ekranında soru geçişi için kısa “Soru geliyor” animasyonu eklendi.
+- Sesler Web Audio API ile üretildi; dış ses dosyası/telifli kaynak kullanılmadı.
+- Cache kırıcı sürüm v=26 yapıldı.
