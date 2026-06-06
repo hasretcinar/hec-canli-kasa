@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Oyuncu - Demode TV Canlı Kasa</title>
-  <link rel="stylesheet" href="style.css?v=25y3">
+  <link rel="stylesheet" href="style.css?v=26">
 </head>
 <body class="player-page">
 <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Tam Ekran</button>
@@ -83,8 +83,8 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-<script src="firebase-config.js?v=25y3"></script>
-<script src="game.js?v=25y3"></script>
+<script src="firebase-config.js?v=26"></script>
+<script src="game.js?v=26"></script>
 <script>
 let roomCode = qs("room") || "";
 let playerId = null;
@@ -137,10 +137,9 @@ function renderPlayerQuestion(){
   const disabled = !p || !isBettingOpen(state) || p.locked || p.eliminated || Number(p.cash || 0) <= 0;
 
   let media = "";
-  if(q.image) media += `<div class="media compact-media fixed-question-media"><img src="${q.image}" alt="Görselli soru"></div>`;
-  if(q.audio) media += `<div class="media compact-media fixed-question-media"><p class="muted">Sesli soru</p><audio controls preload="auto" src="${q.audio}"></audio></div>`;
-  if(q.video) media += `<div class="media compact-media fixed-question-media"><video controls src="${q.video}"></video></div>`;
-  if(!media) media = `<div class="media compact-media fixed-question-media empty-media"><span>DEMODE TV CANLI KASA</span></div>`;
+  if(q.image) media += `<div class="media compact-media"><img src="${q.image}" alt="Görselli soru"></div>`;
+  if(q.audio) media += `<div class="media compact-media"><p class="muted">Sesli soru</p><audio controls preload="auto" src="${q.audio}"></audio></div>`;
+  if(q.video) media += `<div class="media compact-media"><video controls src="${q.video}"></video></div>`;
 
   const opts = q.options.map((opt,i)=>{
     const oldValue = (Array.isArray(p?.allocation) ? p.allocation[i] : byId(`a${i}`)?.value) || 0;
@@ -155,7 +154,7 @@ function renderPlayerQuestion(){
         </div>`;
     const inputRow = showCorrect ? "" : `
         <div class="bet-input-row">
-          <input id="a${i}" type="number" min="0" step="10000" inputmode="numeric" placeholder="10.000 katı" value="${oldValue}" oninput="updateBetTotal()" ${disabled ? "disabled" : ""}>
+          <input id="a${i}" type="number" min="0" step="10000" value="${oldValue}" oninput="updateBetTotal()" ${disabled ? "disabled" : ""}>
           <button class="btn secondary quick mini-all" onclick="putAll(${i})" ${disabled ? "disabled" : ""}>Hepsi</button>
         </div>`;
     return `
@@ -173,7 +172,6 @@ function renderPlayerQuestion(){
   }).join("");
 
   const revealBanner = showCorrect ? `<div class="answer-reveal-banner"><span class="answer-reveal-kicker">✅ Doğru cevap</span><strong>${letters[correctIndex]} • ${escapeHtml(q.options[correctIndex])}</strong></div>` : "";
-  const lockedNotice = !showCorrect && p?.locked ? `<div class="locked-notice">🔒 Dağıtımın kilitlendi. Cevap bekleniyor...</div>` : "";
 
   area.innerHTML = `
     <div class="card question-card player-question-card ${showCorrect ? "reveal-stage" : ""}">
@@ -185,9 +183,8 @@ function renderPlayerQuestion(){
         <div class="badge">${state.phase === "betting" ? "Para yatırma" : "Cevap açıklandı"}</div>
       </div>
       ${media}
-      <div class="player-question-text"><h2>${q.question}</h2></div>
+      <h2>${q.question}</h2>
       ${revealBanner}
-      ${lockedNotice}
       <div class="options player-options option-count-${q.options.length}">${opts}</div>
     </div>
   `;
@@ -322,25 +319,10 @@ function updateMoneyStacks(){
 function updateBetTotal(){
   const p = me();
   if(!p) return;
-  const values = getBet();
-  const total = values.reduce((a,b)=>a+b,0);
+  const total = getBet().reduce((a,b)=>a+b,0);
   byId("betTotal").textContent = money(total);
   const status = byId("betStatus");
-  const invalidUnit = values.some(v => !isValidMoneyUnit(v, true));
-  const invalidCash = !isValidMoneyUnit(Number(p.cash || 0), true);
-
-  document.querySelectorAll(".bet-input-row input").forEach((input, idx)=>{
-    const val = values[idx] || 0;
-    input.classList.toggle("invalid-money", !isValidMoneyUnit(val, true));
-  });
-
-  if(invalidCash){
-    status.textContent = "Kasa 10.000 katı değil";
-    status.className = "burned";
-  }else if(invalidUnit){
-    status.textContent = "10.000 katı olmalı";
-    status.className = "burned";
-  }else if(total === Number(p.cash || 0)){
+  if(total === Number(p.cash || 0)){
     status.textContent = "Tamam";
     status.className = "kept";
   }else if(total > Number(p.cash || 0)){
@@ -351,7 +333,7 @@ function updateBetTotal(){
     status.className = "burned";
   }
   const lockBtn = byId("lockBtn");
-  if(lockBtn) lockBtn.disabled = !isBettingOpen(state) || p.locked || p.eliminated || invalidCash || invalidUnit || total !== Number(p.cash || 0);
+  if(lockBtn) lockBtn.disabled = !isBettingOpen(state) || p.locked || p.eliminated || total !== Number(p.cash || 0);
   updateMoneyStacks();
 }
 
@@ -378,13 +360,8 @@ function clearBet(){ setBet(Array(currentOptionCount()).fill(0)); }
 
 async function doLock(){
   if(!isBettingOpen(state)){ alert("Süre bitti. Para kilitleyemezsin."); return; }
-  const values = getBet();
-  if(values.some(v => !isValidMoneyUnit(v, true))){
-    alert(moneyRuleText());
-    return;
-  }
   try{
-    await lockPlayerBet(roomCode, playerId, values);
+    await lockPlayerBet(roomCode, playerId, getBet());
   }catch(e){ alert(e.message); }
 }
 
