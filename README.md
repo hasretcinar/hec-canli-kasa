@@ -186,3 +186,14 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Yayın ekranında reveal modunda soru kartı, görsel, şıklar ve sonuç tablosu birlikte sığacak şekilde ayarlandı.
 - Moderatör ekranında 3 şıklı sorularda sonuç matrisi ve seçenek düzeni sıkıştırıldı.
 - Cache kırıcı sürüm v=22 yapıldı.
+
+
+## v23 Güncellemesi
+
+- Final/kazanan ekranı eklendi.
+- Oyun final fazına geçtiğinde kazananın avatarı ortaya büyüyerek gelir.
+- Konfeti ve ışık/parıltı animasyonu eklendi.
+- Kazanan adı ve kalan parası büyük gösterilir.
+- Final sıralaması ekranda kompakt şekilde kalır.
+- Moderatör paneline “Final Ekranını Göster” butonu eklendi.
+- Cache kırıcı sürüm v=23 yapıldı.

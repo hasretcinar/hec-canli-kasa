@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moderatör - Demode TV Canlı Kasa</title>
-  <link rel="stylesheet" href="style.css?v=22">
+  <link rel="stylesheet" href="style.css?v=23">
 </head>
 <body class="moderator-page">
 <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Tam Ekran</button>
@@ -70,6 +70,7 @@
           <button class="btn primary" onclick="doStartGame()">Oyunu Başlat</button>
           <button class="btn success" onclick="doReveal()">Cevabı Aç</button>
           <button class="btn primary" onclick="doNext()">Sonraki Soru</button>
+          <button class="btn secondary" onclick="doShowFinal()">Final Ekranını Göster</button>
           <button class="btn danger" onclick="doReset()">Sıfırla</button>
         </div>
       </div>
@@ -86,8 +87,8 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-<script src="firebase-config.js?v=22"></script>
-<script src="game.js?v=22"></script>
+<script src="firebase-config.js?v=23"></script>
+<script src="game.js?v=23"></script>
 <script>
 let roomCode = qs("room") || null;
 let state = null;
@@ -145,6 +146,12 @@ async function doReveal(){
 
 async function doNext(){
   try{ await nextQuestion(roomCode); }
+  catch(e){ alert(e.message); }
+}
+
+async function doShowFinal(){
+  if(!confirm("Final ekranını yayına vermek istiyor musun?")) return;
+  try{ await showFinal(roomCode); }
   catch(e){ alert(e.message); }
 }
 

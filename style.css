@@ -2220,3 +2220,264 @@ body:not(.display-page):not(.player-page) .media video{
     grid-template-columns:1fr !important;
   }
 }
+
+
+/* v23 final / kazanan animasyonu */
+@keyframes winnerPop{
+  0%{opacity:0; transform:translateY(80px) scale(.18); filter:blur(12px) brightness(.7);}
+  55%{opacity:1; transform:translateY(-8px) scale(1.08); filter:blur(0) brightness(1.12);}
+  100%{opacity:1; transform:translateY(0) scale(1); filter:blur(0) brightness(1);}
+}
+
+@keyframes winnerGlowSpin{
+  from{transform:translate(-50%,-50%) rotate(0deg);}
+  to{transform:translate(-50%,-50%) rotate(360deg);}
+}
+
+@keyframes finalTextIn{
+  from{opacity:0; transform:translateY(18px) scale(.96);}
+  to{opacity:1; transform:translateY(0) scale(1);}
+}
+
+@keyframes confettiFall{
+  0%{opacity:0; transform:translate3d(0,-70px,0) rotate(0deg);}
+  8%{opacity:1;}
+  100%{opacity:.92; transform:translate3d(calc((var(--x) - 50) * .55vw), 105vh, 0) rotate(calc(var(--rot) + 720deg));}
+}
+
+.final-mode .side-panel,
+.display-page.final-mode .display-ranking{
+  filter:saturate(.85) brightness(.92);
+}
+
+.winner-stage{
+  position:relative !important;
+  overflow:hidden !important;
+  min-height:620px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  isolation:isolate !important;
+  padding:26px !important;
+  background:
+    radial-gradient(circle at 50% 36%, rgba(255,204,51,.22), transparent 28%),
+    radial-gradient(circle at 50% 50%, rgba(99,212,230,.16), transparent 40%),
+    linear-gradient(180deg, rgba(4,18,55,.98), rgba(2,10,34,.96)) !important;
+}
+
+.winner-glow{
+  position:absolute;
+  left:50%;
+  top:38%;
+  width:440px;
+  height:440px;
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+  background:
+    conic-gradient(from 0deg, transparent, rgba(255,204,51,.36), transparent, rgba(99,212,230,.32), transparent);
+  opacity:.75;
+  filter:blur(8px);
+  animation:winnerGlowSpin 8s linear infinite;
+  z-index:-1;
+}
+
+.final-confetti{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:1;
+}
+
+.final-confetti span{
+  position:absolute;
+  top:-28px;
+  left:calc(var(--x) * 1%);
+  width:9px;
+  height:15px;
+  border-radius:3px;
+  background:hsl(var(--hue), 90%, 62%);
+  box-shadow:0 0 10px hsla(var(--hue), 90%, 62%, .6);
+  animation:confettiFall var(--dur) linear infinite;
+  animation-delay:var(--delay);
+}
+
+.final-badge{
+  z-index:2;
+  margin-bottom:10px !important;
+}
+
+.final-kicker{
+  z-index:2;
+  margin:0 0 12px !important;
+  color:#9defff !important;
+  font-weight:1000 !important;
+  letter-spacing:2px !important;
+  font-size:clamp(14px,1.4vw,20px) !important;
+  text-transform:uppercase;
+  animation:finalTextIn .55s ease-out both;
+}
+
+.winner-avatar-wrap{
+  z-index:2;
+  width:clamp(150px,18vw,260px);
+  height:clamp(150px,18vw,260px);
+  border-radius:50%;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:7px solid rgba(255,255,255,.88);
+  box-shadow:
+    0 0 0 8px rgba(255,204,51,.22),
+    0 0 45px rgba(255,204,51,.55),
+    0 22px 55px rgba(0,0,0,.50);
+  background:rgba(255,255,255,.08);
+  animation:winnerPop .95s cubic-bezier(.2,1.25,.2,1) both;
+}
+
+.winner-avatar-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 34%;
+  display:block;
+}
+
+.winner-avatar-fallback{
+  font-size:72px;
+  font-weight:1000;
+  color:var(--gold);
+}
+
+.winner-name{
+  z-index:2;
+  margin:18px 0 4px !important;
+  font-size:clamp(42px,5.2vw,92px) !important;
+  line-height:.96 !important;
+  letter-spacing:1px !important;
+  text-transform:uppercase;
+  color:#fff !important;
+  text-shadow:0 0 28px rgba(99,212,230,.34),0 10px 24px rgba(0,0,0,.48);
+  animation:finalTextIn .65s ease-out .22s both;
+}
+
+.winner-money{
+  z-index:2;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin:8px 0 18px;
+  padding:12px 26px;
+  border-radius:999px;
+  border:1px solid rgba(255,204,51,.52);
+  background:linear-gradient(135deg, rgba(255,204,51,.24), rgba(255,255,255,.06));
+  color:var(--gold);
+  font-size:clamp(24px,3vw,48px);
+  font-weight:1000;
+  box-shadow:0 0 26px rgba(255,204,51,.18);
+  animation:finalTextIn .65s ease-out .35s both;
+}
+
+.final-list-compact{
+  z-index:2;
+  width:min(760px,96%);
+  display:grid;
+  gap:7px;
+  margin-top:4px;
+  animation:finalTextIn .65s ease-out .48s both;
+}
+
+.final-row{
+  display:grid;
+  grid-template-columns:42px minmax(0,1fr) auto;
+  align-items:center;
+  gap:10px;
+  padding:9px 12px;
+  border-radius:16px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.10);
+  text-align:left;
+}
+
+.final-row.champion{
+  background:linear-gradient(135deg, rgba(255,204,51,.20), rgba(28,199,109,.14));
+  border-color:rgba(255,204,51,.38);
+}
+
+.final-medal{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.10);
+  font-weight:1000;
+}
+
+.display-page.final-mode .display-content{
+  height:calc(100vh - 76px) !important;
+}
+
+.display-page.final-mode .winner-stage{
+  min-height:calc(100vh - 110px) !important;
+}
+
+.display-page.final-mode #resultsBox{
+  display:none !important;
+}
+
+.player-page.final-mode .winner-stage{
+  min-height:calc(100vh - 130px) !important;
+}
+
+.moderator-page.final-mode .winner-stage{
+  min-height:100% !important;
+  padding:16px !important;
+}
+
+.moderator-page.final-mode .winner-avatar-wrap{
+  width:130px;
+  height:130px;
+}
+
+.moderator-page.final-mode .winner-name{
+  font-size:38px !important;
+}
+
+.moderator-page.final-mode .winner-money{
+  font-size:24px !important;
+  padding:8px 18px;
+}
+
+.moderator-page.final-mode .final-list-compact{
+  max-height:190px;
+  overflow:hidden;
+}
+
+@media(max-height:780px){
+  .winner-stage{
+    min-height:520px !important;
+    padding:18px !important;
+  }
+  .winner-avatar-wrap{
+    width:140px;
+    height:140px;
+  }
+  .winner-name{
+    font-size:44px !important;
+  }
+  .winner-money{
+    font-size:26px !important;
+    padding:8px 18px;
+  }
+  .final-list-compact{
+    gap:5px;
+  }
+  .final-row{
+    padding:6px 9px;
+  }
+}
