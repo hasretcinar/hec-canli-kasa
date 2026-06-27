@@ -294,3 +294,10 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Yayın sıralamasında para ve uzun isim taşması düzeltildi.
 - Sağ panel fotoğraf/isim/para hizası yeniden ayarlandı.
 - Cache sürümü `genel21`.
+
+
+## Genel v2.2
+- Final ekranındaki ekstra istatistik kutuları kaldırıldı.
+- Oyun sonu ekranı daha sade bırakıldı: kazanan, para ve final sıralaması.
+- Çalışan v2.1 sürümü baz alınmıştır.
+- Cache sürümü `genel22`.

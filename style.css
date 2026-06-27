@@ -4118,3 +4118,9 @@ body:after{
 .display-control-dock.collapsed{
   opacity:.72;
 }
+
+
+/* Genel v2.2 — final ekranı sade */
+.final-stats{
+  display:none !important;
+}

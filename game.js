@@ -370,7 +370,6 @@ function renderFinalBoard(state, containerId="questionArea"){
         </div>
         <h1 class="winner-name">${escapeHtml(winner.name || "Kazanan")}</h1>
         <div class="winner-money">${money(winner.cash || 0)}</div>
-        ${finalStatsHtml(state)}
       ` : `
         <h1 class="winner-name">Kazanan yok</h1>
       `}
