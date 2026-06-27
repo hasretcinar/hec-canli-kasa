@@ -26,9 +26,7 @@ const avatarOptions = [
   }
 ];
 
-function avatarById(id){
-  return avatarOptions.find(a => a.id === id) || null;
-}
+function avatarById(id){ return avatarOptions.find(a => a.id === id) || null; }
 
 
 const questions = [
@@ -177,6 +175,19 @@ function correctIndexForQuestion(q){
 }
 
 function money(n){ return Math.round(Number(n)||0).toLocaleString("tr-TR") + " TL"; }
+
+function playerAvatarHtml(p, className="score-avatar-img"){
+  const src = p?.avatarSrc || "";
+  if(src){
+    return `<img class="${className}" src="${src}" alt="${escapeHtml(p.name || "Oyuncu")}">`;
+  }
+  const av = avatarById(p?.avatar || "");
+  if(av){
+    return `<img class="${className}" src="${av.src}" alt="${escapeHtml(p.name || av.name)}">`;
+  }
+  return `<span class="score-avatar-fallback">${String(p?.name || "?").slice(0,1).toUpperCase()}</span>`;
+}
+
 
 function isWholeNumber(n){
   const x = Number(n);
@@ -371,10 +382,7 @@ function renderPlayers(state, containerId="playersBox"){
   if(!box) return;
   const arr = ranking(state);
   box.innerHTML = arr.map((p,i)=>{
-    const av = avatarById(p.avatar || "");
-    const avatarHtml = av
-      ? `<img class="score-avatar-img" src="${av.src}" alt="${escapeHtml(p.name || av.name)}">`
-      : `<span class="score-avatar-fallback">${String(p.name || "?").slice(0,1).toUpperCase()}</span>`;
+    const avatarHtml = playerAvatarHtml(p, "score-avatar-img");
     const revealResult = state?.phase === "revealed" && state?.lastResults?.results ? state.lastResults.results[p.id] : null;
     const summaryText = state?.phase === "final"
       ? `${p.eliminated ? "Elendi" : "Oyunu tamamladı"} • ${p.correctCount || 0} doğru • ${money(p.burned || 0)} yandı`
@@ -403,11 +411,9 @@ function renderFinalBoard(state, containerId="questionArea"){
   if(!area) return;
   const arr = ranking(state);
   const winner = arr[0] || null;
-  const av = winner ? avatarById(winner.avatar || "") : null;
-  const initials = winner ? String(winner.name || "?").trim().slice(0,1).toUpperCase() : "?";
-  const winnerAvatar = av
-    ? `<img class="winner-avatar-img" src="${av.src}" alt="${escapeHtml(winner.name || av.name)}">`
-    : `<span class="winner-avatar-fallback">${escapeHtml(initials)}</span>`;
+  const winnerAvatar = winner
+    ? playerAvatarHtml(winner, "winner-avatar-img")
+    : `<span class="winner-avatar-fallback">?</span>`;
 
   const confetti = Array.from({length:56}, (_,i)=>{
     const x = (i * 17) % 100;
@@ -424,7 +430,7 @@ function renderFinalBoard(state, containerId="questionArea"){
       <div class="winner-glow" aria-hidden="true"></div>
 
       <div class="badge final-badge">Final</div>
-      <p class="final-kicker">DEMODE TV CANLI KASA KAZANANI</p>
+      <p class="final-kicker">CANLI KASA KAZANANI</p>
 
       ${winner ? `
         <div class="winner-avatar-wrap">
@@ -568,10 +574,11 @@ async function createRoom(duration=DEFAULT_DURATION){
   return code;
 }
 
-async function joinPlayer(code, name, avatar=''){
+async function joinPlayer(code, name, avatar='', avatarSrc=''){
   const cleanCode = String(code || "").toUpperCase().trim();
   const cleanName = String(name || "").trim().slice(0,24);
   const cleanAvatar = avatarOptions.some(a => a.id === avatar) ? avatar : "";
+  const cleanAvatarSrc = String(avatarSrc || "").startsWith("data:image/") ? String(avatarSrc).slice(0, 350000) : "";
   if(!cleanCode || !cleanName) throw new Error("Oda kodu ve isim gerekli.");
   const ref = roomRef(cleanCode);
   const snap = await ref.get();
@@ -583,6 +590,7 @@ async function joinPlayer(code, name, avatar=''){
   await playerPath.update({
     name: cleanName,
     avatar: cleanAvatar,
+    avatarSrc: cleanAvatarSrc,
     cash: START_CASH,
     burned: 0,
     correctCount: 0,
@@ -806,6 +814,7 @@ async function updatePlayerAvatar(code, playerId, avatarId){
   if(!snap.exists()) throw new Error("Oda yok.");
   await ref.child(`players/${playerId}`).update({
     avatar: cleanAvatar,
+    avatarSrc: cleanAvatarSrc,
     lastSeen: firebase.database.ServerValue.TIMESTAMP
   });
 }

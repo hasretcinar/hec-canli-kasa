@@ -238,3 +238,12 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - 4 oyunculuk para dağıtım tablosu ekranın altında sabit ve kompakt şekilde yer alır.
 - Para dağıtım tablosunun başlıklarında artık A/B/C/D yerine ilgili şık metinleri de gösterilir.
 - Cache kırıcı sürüm `v=25y4` olarak ayarlanmıştır.
+
+## Genel Canlı Kasa v1
+- Demode TV marka yazıları genel "Canlı Kasa" adına çevrildi.
+- Arka plandaki Demode logo/watermark kapatıldı.
+- Hazır karakter/avatar fotoğrafları kaldırıldı.
+- Oyuncular kendi galerilerinden fotoğraf seçebilir.
+- Fotoğraf tarayıcıda 320x320 JPEG olarak küçültülüp oyuncu profiline kaydedilir.
+- Oda kodu yayın ekranında gizli kalır.
+- Mevcut soru akışı korunmuştur; özel ilgili soru metnine dokunulmamıştır.

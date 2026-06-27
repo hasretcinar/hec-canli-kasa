@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Moderatör - Demode TV Canlı Kasa</title>
-  <link rel="stylesheet" href="style.css?v=25y4">
+  <title>Moderatör - Canlı Kasa</title>
+  <link rel="stylesheet" href="style.css?v=genel1">
 </head>
 <body class="moderator-page">
 <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Tam Ekran</button>
@@ -99,8 +99,8 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-<script src="firebase-config.js?v=25y4"></script>
-<script src="game.js?v=25y4"></script>
+<script src="firebase-config.js?v=genel1"></script>
+<script src="game.js?v=genel1"></script>
 <script>
 let roomCode = qs("room") || null;
 let state = null;
@@ -196,7 +196,8 @@ async function doUpdatePlayer(playerId){
 
   const name = row.querySelector(".manage-name").value;
   const cash = Number(row.querySelector(".manage-cash").value);
-  const avatar = row.querySelector(".manage-avatar-select").value;
+  const avatarEl = row.querySelector(".manage-avatar-select");
+  const avatar = avatarEl ? avatarEl.value : "";
 
   if(!isValidMoneyUnit(cash, true)){
     alert(moneyRuleText());
@@ -206,7 +207,7 @@ async function doUpdatePlayer(playerId){
   try{
     await updatePlayerName(roomCode, playerId, name);
     await updatePlayerCash(roomCode, playerId, cash);
-    await updatePlayerAvatar(roomCode, playerId, avatar);
+    if(avatar) await updatePlayerAvatar(roomCode, playerId, avatar);
   }catch(e){
     alert(e.message);
   }

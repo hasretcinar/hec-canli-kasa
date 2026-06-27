@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Oyuncu - Demode TV Canlı Kasa</title>
-  <link rel="stylesheet" href="style.css?v=25y4">
+  <title>Oyuncu - Canlı Kasa</title>
+  <link rel="stylesheet" href="style.css?v=genel1">
 </head>
 <body class="player-page">
 <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Tam Ekran</button>
@@ -32,11 +32,12 @@
           <label>Adın</label>
           <input id="nameInput" placeholder="Adını yaz">
         </div>
-      </div>
-
-      <div class="card avatar-select-card">
+      </div> 
+      <div class="card avatar-select-card custom-photo-card">
         <label>Fotoğrafını seç</label>
-        <div class="avatar-picker" id="avatarPicker"></div>
+        <p class="muted">İstersen galerinden bir fotoğraf yükle. Fotoğraf otomatik küçültülür.</p>
+        <input id="photoInput" type="file" accept="image/*" onchange="handlePhotoSelect(event)">
+        <div class="custom-photo-preview" id="photoPreview"><span>Fotoğraf seçilmedi</span></div>
       </div>
 
       <button class="btn primary" onclick="doJoin()">Odaya Katıl</button>
@@ -83,17 +84,18 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-<script src="firebase-config.js?v=25y4"></script>
-<script src="game.js?v=25y4"></script>
+<script src="firebase-config.js?v=genel1"></script>
+<script src="game.js?v=genel1"></script>
 <script>
 let roomCode = qs("room") || "";
 let playerId = null;
 let state = null;
 let activeRef = null;
-let selectedAvatar = "mehmet";
+let selectedAvatar = "";
+let selectedAvatarSrc = "";
 
 byId("roomInput").value = roomCode;
-renderAvatarPicker();
+
 
 function currentOptionCount(){
   const q = publicQuestionForRender(state);
@@ -195,32 +197,47 @@ function renderPlayerQuestion(){
 
 
 
-function renderAvatarPicker(){
-  const box = byId("avatarPicker");
-  if(!box) return;
 
-  box.innerHTML = avatarOptions.map((avatar, index)=>`
-    <button type="button" class="avatar-choice ${index === 0 ? "selected" : ""}" data-avatar="${avatar.id}" onclick="selectAvatar('${avatar.id}')">
-      <img src="${avatar.src}" alt="${escapeHtml(avatar.name)}">
-      <span>${escapeHtml(avatar.name)}</span>
-    </button>
-  `).join("");
-
-  selectedAvatar = avatarOptions[0]?.id || "";
+function handlePhotoSelect(event){
+  const file = event.target.files && event.target.files[0];
+  if(!file) return;
+  if(!file.type.startsWith("image/")){
+    alert("Lütfen görsel dosyası seç.");
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      const size = 320;
+      const canvas = document.createElement("canvas");
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#101935";
+      ctx.fillRect(0,0,size,size);
+      const scale = Math.max(size / img.width, size / img.height);
+      const w = img.width * scale;
+      const h = img.height * scale;
+      const x = (size - w) / 2;
+      const y = (size - h) / 2;
+      ctx.drawImage(img, x, y, w, h);
+      selectedAvatarSrc = canvas.toDataURL("image/jpeg", 0.72);
+      const preview = byId("photoPreview");
+      if(preview) preview.innerHTML = `<img src="${selectedAvatarSrc}" alt="Seçilen fotoğraf">`;
+    };
+    img.onerror = () => alert("Fotoğraf okunamadı.");
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
 }
 
-function selectAvatar(id){
-  selectedAvatar = id;
-  document.querySelectorAll(".avatar-choice").forEach(btn=>{
-    btn.classList.toggle("selected", btn.dataset.avatar === id);
-  });
-}
 
 async function doJoin(){
   try{
     roomCode = byId("roomInput").value.trim().toUpperCase();
     const name = byId("nameInput").value.trim();
-    playerId = await joinPlayer(roomCode, name, selectedAvatar);
+    playerId = await joinPlayer(roomCode, name, selectedAvatar, selectedAvatarSrc);
     byId("joinArea").classList.add("hidden");
     byId("playArea").classList.remove("hidden");
     listenRoom();
@@ -246,11 +263,10 @@ function renderMe(){
   byId("meName").textContent = p.name;
   byId("meCash").textContent = money(p.cash || 0);
 
-  const av = avatarById(p.avatar || "");
   const avatarBox = byId("meAvatar");
   if(avatarBox){
-    avatarBox.innerHTML = av
-      ? `<img src="${av.src}" alt="${escapeHtml(p.name || av.name)}">`
+    avatarBox.innerHTML = p.avatarSrc
+      ? `<img src="${p.avatarSrc}" alt="${escapeHtml(p.name || "Oyuncu")}">`
       : `<span>${escapeHtml(String(p.name || "?").slice(0,1).toUpperCase())}</span>`;
   }
 
