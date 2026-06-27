@@ -263,3 +263,24 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Oyuncu kilitlediğinde yayın sıralamasında canlı kilit animasyonu görünür.
 - Yönetimli yayın ekranı eklendi: `display.html?room=KOD&control=1`
 - Moderatör paneli daha sade görünecek şekilde toparlandı.
+
+
+## Genel v1.2
+- Yönetimli yayın ekranındaki tarayıcı onay mesajları kaldırıldı.
+- Cevabı Aç / Sonraki Soru / Final / Sıfırla butonları artık tam ekranı bozan site mesajı göstermeden çalışır.
+- Yayın sıralama panelinde uzun oyuncu isimleri taşmayacak şekilde ayarlandı.
+- Oyuncu adı, fotoğraf ve para hizası daha sade/okunabilir hale getirildi.
+- Cache sürümü `genel12`.
+
+
+## Genel v2
+- Sorular `questions.json` dosyasına taşındı.
+- Oda kurarken soru sayısı, süre, başlangıç kasası, para adımı ve kategori seçilebilir.
+- Oyun, soru bankasından zorluk sırasına göre soru seti seçer.
+- Oyuncu girişi kilitle/aç özelliği eklendi.
+- Oyuncu ekranına aktif şık seçerek +10B / +50B / +100B para ekleme butonları eklendi.
+- Final istatistikleri eklendi.
+- Yönetimli yayın ekranında kontrol paneli Ctrl+K ile gizlenip açılabilir.
+- Geçmiş oyunlar localStorage'a kaydedilir.
+- Moderatör panelinde soru JSON taslağı oluşturma alanı eklendi.
+- 6. adımdaki soru sonu mini özet özellikle eklenmedi.

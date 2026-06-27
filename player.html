@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Oyuncu - Canlı Kasa</title>
-  <link rel="stylesheet" href="style.css?v=genel11">
+  <link rel="stylesheet" href="style.css?v=genel2">
 </head>
 <body class="player-page">
 <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Tam Ekran</button>
@@ -70,6 +70,11 @@
           <strong id="betTotal" class="money">0 TL</strong>
           <span id="betStatus" class="burned">Eksik</span>
         </div>
+        <div class="quick-amounts" id="quickAmountButtons">
+          <button class="btn secondary quick amount-btn" onclick="addSelectedAmount(10000)">+10B</button>
+          <button class="btn secondary quick amount-btn" onclick="addSelectedAmount(50000)">+50B</button>
+          <button class="btn secondary quick amount-btn" onclick="addSelectedAmount(100000)">+100B</button>
+        </div>
         <div class="compact-actions">
           <button class="btn secondary quick" onclick="splitEven()">Eşit Böl</button>
           <button class="btn danger quick" onclick="clearBet()">Temizle</button>
@@ -84,8 +89,8 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-<script src="firebase-config.js?v=genel11"></script>
-<script src="game.js?v=genel11"></script>
+<script src="firebase-config.js?v=genel2"></script>
+<script src="game.js?v=genel2"></script>
 <script>
 let roomCode = qs("room") || "";
 let playerId = null;
@@ -93,6 +98,7 @@ let state = null;
 let activeRef = null;
 let selectedAvatar = "";
 let selectedAvatarSrc = "";
+let activeBetOption = 0;
 
 byId("roomInput").value = roomCode;
 
@@ -160,7 +166,7 @@ function renderPlayerQuestion(){
           <button class="btn secondary quick mini-all" onclick="putAll(${i})" ${disabled ? "disabled" : ""}>Hepsi</button>
         </div>`;
     return `
-      <div class="option bet-option${cls}${showCorrect ? " reveal-compact" : ""}" style="--reveal-delay:${(i * 0.08).toFixed(2)}s">
+      <div class="option bet-option${cls}${showCorrect ? " reveal-compact" : ""}" data-option="${i}" onclick="selectBetOption(${i})" style="--reveal-delay:${(i * 0.08).toFixed(2)}s">
         <div class="bet-option-main">
           <span class="letter">${letters[i]}</span>
           <strong>${escapeHtml(opt)}</strong>
@@ -192,7 +198,7 @@ function renderPlayerQuestion(){
       <div class="options player-options option-count-${q.options.length}">${opts}</div>
     </div>
   `;
-  if(!showCorrect) updateBetTotal();
+  if(!showCorrect){ updateBetTotal(); selectBetOption(activeBetOption); }
 }
 
 
@@ -295,6 +301,36 @@ function renderMe(){
   if(state.phase === "betting") updateBetTotal();
 }
 
+
+function currentMoneyStep(){
+  return Number(state?.settings?.moneyStep || DEFAULT_MONEY_STEP || 10000);
+}
+
+function isValidDynamicMoney(v){
+  const step = currentMoneyStep();
+  const n = Number(v);
+  return Number.isFinite(n) && Math.floor(n) === n && (n === 0 || (n >= step && n % step === 0));
+}
+
+function selectBetOption(i){
+  activeBetOption = i;
+  document.querySelectorAll(".bet-option").forEach(card=>{
+    card.classList.toggle("active-bet-option", Number(card.dataset.option) === i);
+  });
+}
+
+function addSelectedAmount(amount){
+  const p = me();
+  if(!p) return;
+  const idx = Math.max(0, Math.min(currentOptionCount()-1, Number(activeBetOption || 0)));
+  const values = getBet();
+  const currentTotal = values.reduce((a,b)=>a+b,0);
+  const left = Math.max(0, Number(p.cash || 0) - currentTotal);
+  const add = Math.min(Number(amount || 0), left);
+  values[idx] = Number(values[idx] || 0) + add;
+  setBet(values);
+}
+
 function getBet(){
   return Array.from({length: currentOptionCount()}, (_,i)=>{
     const el = byId(`a${i}`);
@@ -341,19 +377,19 @@ function updateBetTotal(){
   const total = values.reduce((a,b)=>a+b,0);
   byId("betTotal").textContent = money(total);
   const status = byId("betStatus");
-  const invalidUnit = values.some(v => !isValidMoneyUnit(v, true));
-  const invalidCash = !isValidMoneyUnit(Number(p.cash || 0), true);
+  const invalidUnit = values.some(v => !isValidDynamicMoney(v));
+  const invalidCash = !isValidDynamicMoney(Number(p.cash || 0));
 
   document.querySelectorAll(".bet-input-row input").forEach((input, idx)=>{
     const val = values[idx] || 0;
-    input.classList.toggle("invalid-money", !isValidMoneyUnit(val, true));
+    input.classList.toggle("invalid-money", !isValidDynamicMoney(val));
   });
 
   if(invalidCash){
     status.textContent = "Kasa 10.000 katı değil";
     status.className = "burned";
   }else if(invalidUnit){
-    status.textContent = "10.000 katı olmalı";
+    status.textContent = `${money(currentMoneyStep())} katı olmalı`;
     status.className = "burned";
   }else if(total === Number(p.cash || 0)){
     status.textContent = "Tamam";
@@ -394,8 +430,8 @@ function clearBet(){ setBet(Array(currentOptionCount()).fill(0)); }
 async function doLock(){
   if(!isBettingOpen(state)){ alert("Süre bitti. Para kilitleyemezsin."); return; }
   const values = getBet();
-  if(values.some(v => !isValidMoneyUnit(v, true))){
-    alert(moneyRuleText());
+  if(values.some(v => !isValidDynamicMoney(v))){
+    alert(`Para miktarları ${money(currentMoneyStep())} katı olmalı.`);
     return;
   }
   try{

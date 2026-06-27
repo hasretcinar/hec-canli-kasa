@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Yayın Ekranı - Canlı Kasa</title>
-  <link rel="stylesheet" href="style.css?v=genel11">
+  <link rel="stylesheet" href="style.css?v=genel2">
 </head>
 <body class="display-page">
 <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Tam Ekran</button>
@@ -48,8 +48,8 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-<script src="firebase-config.js?v=genel11"></script>
-<script src="game.js?v=genel11"></script>
+<script src="firebase-config.js?v=genel2"></script>
+<script src="game.js?v=genel2"></script>
 <script>
 let roomCode = qs("room") || prompt("Yayın ekranı için oda kodu:");
 let state = null;
@@ -76,6 +76,14 @@ function toggleDisplayControls(){
   byId("displayControlDock")?.classList.toggle("collapsed");
 }
 
+function keydownDisplayControl(e){
+  if(e.ctrlKey && e.key.toLowerCase() === "k"){
+    e.preventDefault();
+    toggleDisplayControls();
+  }
+}
+document.addEventListener("keydown", keydownDisplayControl);
+
 function renderDisplayControlState(){
   const dock = byId("displayControlDock");
   if(dock) dock.classList.toggle("hidden", !controlMode);
@@ -85,30 +93,27 @@ async function doDisplayStart(){
   try{
     const duration = Number(state?.duration || DEFAULT_DURATION);
     await startGame(roomCode, duration);
-  }catch(e){ alert(e.message); }
+  }catch(e){ console.warn(e.message); }
 }
 
 async function doDisplayReveal(){
-  if(!confirm("Cevabı açıklamak istediğine emin misin?")) return;
-  try{ await revealAnswer(roomCode); }catch(e){ alert(e.message); }
+  try{ await revealAnswer(roomCode); }catch(e){ console.warn(e.message); }
 }
 
 async function doDisplayNext(){
-  if(!confirm("Sonraki soruya geçilsin mi?")) return;
-  try{ await nextQuestion(roomCode); }catch(e){ alert(e.message); }
+  try{ await nextQuestion(roomCode); }catch(e){ console.warn(e.message); }
 }
 
 async function doDisplayFinal(){
-  if(!confirm("Final ekranı gösterilsin mi?")) return;
-  try{ await showFinal(roomCode); }catch(e){ alert(e.message); }
+  try{ await showFinal(roomCode); }catch(e){ console.warn(e.message); }
 }
 
 async function doDisplayReset(){
-  if(!confirm("Oyun sıfırlansın mı?")) return;
-  try{ await resetRoom(roomCode); }catch(e){ alert(e.message); }
+  try{ await resetRoom(roomCode); }catch(e){ console.warn(e.message); }
 }
 
 if(roomCode){
+  loadQuestionBank();
   roomCode = roomCode.toUpperCase();
   listenRoom(roomCode);
   renderDisplayControlState();

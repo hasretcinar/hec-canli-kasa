@@ -3740,3 +3740,219 @@ body:after{
     height:50px !important;
   }
 }
+
+
+/* Genel v1.2 — tam ekran kontrol mesajları kaldırıldı, sıralama isim taşması düzeltildi */
+
+/* Yayın kontrol butonlarında tarayıcı mesajı yok; butonlar direkt çalışır. */
+.display-control-panel{
+  user-select:none;
+}
+
+/* Sağ sıralama paneli daha dengeli ve taşmasız */
+.display-page .display-rank-row{
+  grid-template-columns:38px 60px minmax(0,1fr) 32px minmax(118px,auto) !important;
+  min-height:78px !important;
+  padding:9px 10px !important;
+  gap:9px !important;
+}
+
+.display-page .display-rank-row .score-avatar,
+.display-page .display-rank-row .score-avatar-img,
+.display-page .display-rank-row .score-avatar-fallback{
+  width:56px !important;
+  height:56px !important;
+  min-width:56px !important;
+  min-height:56px !important;
+}
+
+.display-page .display-rank-row .rank-name{
+  min-width:0 !important;
+  overflow:hidden !important;
+}
+
+.display-page .display-rank-row .rank-name strong{
+  font-size:18px !important;
+  line-height:1.05 !important;
+  max-width:100% !important;
+  display:block !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  word-break:normal !important;
+}
+
+.display-page .display-rank-row .money{
+  font-size:20px !important;
+  line-height:1.05 !important;
+  min-width:118px !important;
+  max-width:150px !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+}
+
+.display-page .display-rank-row .lock-indicator{
+  width:30px !important;
+  height:30px !important;
+  font-size:18px !important;
+}
+
+/* Çok uzun isimlerde kartın fotoğraf/para üstüne binmesini kesin engelle */
+.display-page .display-rank-row > *{
+  min-width:0;
+}
+
+/* Dar ekranda sıralama daha kompakt */
+@media(max-width:1300px){
+  .display-page .display-rank-row{
+    grid-template-columns:32px 52px minmax(0,1fr) 28px minmax(98px,auto) !important;
+    min-height:70px !important;
+  }
+
+  .display-page .display-rank-row .score-avatar,
+  .display-page .display-rank-row .score-avatar-img,
+  .display-page .display-rank-row .score-avatar-fallback{
+    width:50px !important;
+    height:50px !important;
+    min-width:50px !important;
+    min-height:50px !important;
+  }
+
+  .display-page .display-rank-row .rank-name strong{
+    font-size:16px !important;
+  }
+
+  .display-page .display-rank-row .money{
+    font-size:17px !important;
+    min-width:98px !important;
+  }
+}
+
+/* Kontrol paneli biraz daha yayın dostu; kenarda kalır, ekranı kapatmaz */
+.display-control-dock{
+  right:18px !important;
+  bottom:18px !important;
+}
+
+.display-control-panel{
+  width:180px !important;
+  opacity:.92;
+}
+
+.display-control-panel:hover{
+  opacity:1;
+}
+
+
+/* Genel v2 — soru deposu, ayarlar, butonlu para, final istatistik, soru paneli */
+
+.quick-amounts{
+  display:flex;
+  gap:6px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-right:8px;
+}
+
+.amount-btn{
+  padding:8px 10px !important;
+  min-height:0 !important;
+  border-radius:12px !important;
+}
+
+.bet-option.active-bet-option{
+  outline:2px solid rgba(255,214,64,.85) !important;
+  box-shadow:0 0 0 3px rgba(255,214,64,.12), 0 12px 26px rgba(0,0,0,.22) !important;
+}
+
+.final-stats{
+  margin:14px auto 8px;
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:8px;
+  width:min(980px,96%);
+}
+
+.final-stats div{
+  padding:10px;
+  border-radius:14px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.10);
+}
+
+.final-stats span{
+  display:block;
+  color:rgba(255,255,255,.62);
+  font-size:12px;
+  margin-bottom:4px;
+}
+
+.final-stats strong{
+  font-size:15px;
+  color:#ffe568;
+}
+
+.question-builder-card textarea{
+  width:100%;
+  min-height:74px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.06);
+  color:var(--text);
+  padding:12px;
+  resize:vertical;
+}
+
+.question-builder-card input,
+.question-builder-card select,
+.history-card input,
+.history-card select{
+  min-height:40px;
+}
+
+#newQOutput{
+  min-height:120px;
+  font-family:monospace;
+  font-size:12px;
+}
+
+.history-box{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  max-height:180px;
+  overflow:auto;
+  padding:8px;
+  border-radius:14px;
+  background:rgba(0,0,0,.16);
+}
+
+.history-row{
+  padding:8px;
+  border-radius:12px;
+  background:rgba(255,255,255,.05);
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.display-control-dock.collapsed .display-control-panel{
+  display:none !important;
+}
+
+.control-toggle::after{
+  content:"  Ctrl+K";
+  opacity:.55;
+  font-size:11px;
+}
+
+@media(max-width:980px){
+  .final-stats{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .quick-amounts{
+    width:100%;
+    margin:0 0 8px 0;
+  }
+}
