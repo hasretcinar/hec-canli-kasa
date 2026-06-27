@@ -3526,3 +3526,217 @@ body:after{
 .avatar-choice{
   display:none !important;
 }
+
+
+/* Genel v1.1 — sade yayın sıralaması, canlı kilit efekti, sade kontrol modu */
+
+/* Yayın sıralaması: sadece sıra + foto + isim + para */
+.display-page .display-ranking .side-card{
+  padding:14px !important;
+}
+
+.display-page .display-ranking .side-title{
+  font-size:24px !important;
+  margin-bottom:12px !important;
+}
+
+.display-page .display-rank-row{
+  grid-template-columns:42px 70px minmax(0,1fr) 36px auto !important;
+  min-height:86px !important;
+  padding:10px 12px !important;
+  gap:10px !important;
+  align-items:center !important;
+}
+
+.display-page .display-rank-row .rank{
+  width:34px !important;
+  height:34px !important;
+  font-size:16px !important;
+}
+
+.display-page .display-rank-row .score-avatar{
+  width:64px !important;
+  height:64px !important;
+  border-radius:50% !important;
+  overflow:hidden !important;
+  box-shadow:0 0 0 3px rgba(255,255,255,.18), 0 10px 18px rgba(0,0,0,.25) !important;
+}
+
+.display-page .display-rank-row .score-avatar-img,
+.display-page .display-rank-row .score-avatar-fallback{
+  width:64px !important;
+  height:64px !important;
+  font-size:24px !important;
+}
+
+.display-page .display-rank-row .rank-name strong{
+  font-size:19px !important;
+  line-height:1.05 !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  display:block !important;
+}
+
+.display-page .display-rank-row .money{
+  font-size:22px !important;
+  white-space:nowrap !important;
+  text-align:right !important;
+}
+
+.display-page .display-rank-row .small{
+  display:none !important;
+}
+
+.display-page .display-rank-row.eliminated-row{
+  opacity:.58 !important;
+  filter:grayscale(.65) !important;
+}
+
+.display-page .display-rank-row.eliminated-row::after{
+  content:"ELENDİ";
+  right:10px;
+  top:6px;
+  font-size:9px;
+}
+
+.display-page .lock-indicator{
+  width:34px !important;
+  height:34px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border-radius:50% !important;
+  font-size:20px !important;
+}
+
+.display-page .display-rank-row.just-locked .lock-indicator{
+  background:rgba(255,218,79,.20) !important;
+  border:1px solid rgba(255,218,79,.55) !important;
+  box-shadow:0 0 18px rgba(255,218,79,.36) !important;
+}
+
+@keyframes lockPulseLive{
+  0%,100%{transform:scale(1); box-shadow:0 0 0 rgba(255,218,79,0);}
+  50%{transform:scale(1.08); box-shadow:0 0 26px rgba(255,218,79,.55);}
+}
+
+.display-page .display-rank-row.locked-pulse{
+  animation:lockPulseLive .9s ease-in-out infinite !important;
+  border-color:rgba(255,218,79,.58) !important;
+}
+
+/* Yayın kontrol modu */
+.display-control-dock{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:999;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:8px;
+}
+
+.display-control-dock.hidden{
+  display:none !important;
+}
+
+.control-toggle{
+  border:1px solid rgba(255,255,255,.20);
+  background:rgba(10,20,52,.86);
+  color:#fff;
+  border-radius:999px;
+  padding:10px 14px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 12px 28px rgba(0,0,0,.35);
+}
+
+.display-control-panel{
+  width:190px;
+  padding:12px;
+  border-radius:18px;
+  background:rgba(7,15,42,.92);
+  border:1px solid rgba(99,212,230,.22);
+  box-shadow:0 16px 40px rgba(0,0,0,.45);
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.display-control-dock.collapsed .display-control-panel{
+  display:none;
+}
+
+.mini-control{
+  width:100%;
+  padding:9px 10px !important;
+  min-height:0 !important;
+  border-radius:12px !important;
+}
+
+/* Moderatör panelini daha sade göster */
+.moderator-page .moderator-manage-card{
+  padding:14px !important;
+}
+
+.moderator-page .player-manage-box{
+  gap:7px !important;
+}
+
+.moderator-page .manage-player-row{
+  grid-template-columns:40px minmax(140px,1fr) 120px auto auto !important;
+  gap:8px !important;
+  padding:8px !important;
+}
+
+.moderator-page .manage-player-row .manage-cash,
+.moderator-page .manage-player-row .manage-name{
+  min-height:36px !important;
+}
+
+.moderator-page .manage-avatar-note{
+  display:none !important;
+}
+
+.moderator-page .manage-bulk-actions{
+  justify-content:flex-start !important;
+}
+
+.control-link-label{
+  margin-top:8px !important;
+  display:block !important;
+}
+
+@media(max-width:1200px){
+  .display-page .display-rank-row{
+    grid-template-columns:34px 58px minmax(0,1fr) 30px auto !important;
+    min-height:74px !important;
+  }
+
+  .display-page .display-rank-row .score-avatar,
+  .display-page .display-rank-row .score-avatar-img,
+  .display-page .display-rank-row .score-avatar-fallback{
+    width:54px !important;
+    height:54px !important;
+  }
+
+  .display-page .display-rank-row .money{
+    font-size:18px !important;
+  }
+}
+
+@media(max-height:780px){
+  .display-page .display-rank-row{
+    min-height:68px !important;
+    padding:8px 10px !important;
+  }
+
+  .display-page .display-rank-row .score-avatar,
+  .display-page .display-rank-row .score-avatar-img,
+  .display-page .display-rank-row .score-avatar-fallback{
+    width:50px !important;
+    height:50px !important;
+  }
+}

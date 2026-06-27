@@ -381,6 +381,26 @@ function renderPlayers(state, containerId="playersBox"){
   const box = byId(containerId);
   if(!box) return;
   const arr = ranking(state);
+  const isDisplay = !!document.body && document.body.classList.contains("display-page");
+
+  if(isDisplay){
+    box.innerHTML = arr.map((p,i)=>{
+      const avatarHtml = playerAvatarHtml(p, "score-avatar-img");
+      const isLockedNow = state?.phase === "betting" && p.locked && !p.eliminated && Number(p.cash || 0) > 0;
+      const isEliminated = p.eliminated || Number(p.cash || 0) <= 0;
+      return `
+        <div class="player-row display-rank-row ${i===0 ? "leader" : ""} ${isLockedNow ? "just-locked locked-pulse" : ""} ${isEliminated ? "eliminated-row" : ""}" style="--rank:${i}">
+          <div class="rank">${medalFor(i) || (i+1)}</div>
+          <div class="score-avatar">${avatarHtml}</div>
+          <div class="rank-name"><strong>${escapeHtml(p.name || "Oyuncu")}</strong></div>
+          <div class="lock-indicator" title="${isLockedNow ? "Kilitlendi" : ""}">${isLockedNow ? "🔒" : ""}</div>
+          <div class="money">${money(p.cash || 0)}</div>
+        </div>
+      `;
+    }).join("") || `<p class="muted">Oyuncu bekleniyor...</p>`;
+    return;
+  }
+
   box.innerHTML = arr.map((p,i)=>{
     const avatarHtml = playerAvatarHtml(p, "score-avatar-img");
     const revealResult = state?.phase === "revealed" && state?.lastResults?.results ? state.lastResults.results[p.id] : null;
@@ -393,7 +413,7 @@ function renderPlayers(state, containerId="playersBox"){
           : `${p.eliminated ? "Elendi" : (p.locked ? "Kilitledi" : "Bekleniyor")} • ${p.correctCount || 0} doğru • ${money(p.burned || 0)} yandı`);
 
     return `
-      <div class="player-row ${i===0 ? "leader" : ""} ${i===0 && state?.phase === "revealed" ? "leader-flash" : ""} ${p.locked ? "locked" : ""} ${p.eliminated || Number(p.cash || 0) <= 0 ? "eliminated-row" : ""} ${revealResult ? "reveal-pop" : ""}" style="--rank:${i}">
+      <div class="player-row ${i===0 ? "leader" : ""} ${p.locked ? "locked" : ""} ${p.eliminated || Number(p.cash || 0) <= 0 ? "eliminated-row" : ""} ${revealResult ? "reveal-pop" : ""}" style="--rank:${i}">
         <div class="rank">${medalFor(i) || (i+1)}</div>
         <div class="score-avatar">${avatarHtml}</div>
         <div>

@@ -254,3 +254,12 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Eski 4 yarışmacı fotoğrafı ve Demode logo/görsel dosyaları paket dışına çıkarıldı.
 - Oyuncu fotoğraf yükleme sistemi korunmuştur.
 - Cache sürümü `genel1t`.
+
+
+## Genel v1.1
+- Yayın ekranı sıralama paneli sadeleştirildi.
+- Sıralamada sadece sıra/madalya, fotoğraf, isim, kilit göstergesi ve güncel para görünür.
+- Oyuncu fotoğrafları yayın sıralamasında büyütüldü.
+- Oyuncu kilitlediğinde yayın sıralamasında canlı kilit animasyonu görünür.
+- Yönetimli yayın ekranı eklendi: `display.html?room=KOD&control=1`
+- Moderatör paneli daha sade görünecek şekilde toparlandı.

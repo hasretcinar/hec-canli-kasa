@@ -4,10 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Yayın Ekranı - Canlı Kasa</title>
-  <link rel="stylesheet" href="style.css?v=genel1t">
+  <link rel="stylesheet" href="style.css?v=genel11">
 </head>
 <body class="display-page">
 <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Tam Ekran</button>
+
+<div class="display-control-dock hidden" id="displayControlDock">
+  <button class="control-toggle" onclick="toggleDisplayControls()">🎮 Kontrol</button>
+  <div class="display-control-panel" id="displayControlPanel">
+    <strong>Yayın Kontrolü</strong>
+    <button class="btn primary mini-control" onclick="doDisplayStart()">Oyunu Başlat</button>
+    <button class="btn success mini-control" onclick="doDisplayReveal()">Cevabı Aç</button>
+    <button class="btn primary mini-control" onclick="doDisplayNext()">Sonraki Soru</button>
+    <button class="btn secondary mini-control" onclick="doDisplayFinal()">Final</button>
+    <button class="btn danger mini-control" onclick="doDisplayReset()">Sıfırla</button>
+  </div>
+</div>
 
 <div class="app display-app">
   <main class="panel main-panel display-main">
@@ -36,12 +48,13 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-<script src="firebase-config.js?v=genel1t"></script>
-<script src="game.js?v=genel1t"></script>
+<script src="firebase-config.js?v=genel11"></script>
+<script src="game.js?v=genel11"></script>
 <script>
 let roomCode = qs("room") || prompt("Yayın ekranı için oda kodu:");
 let state = null;
 let activeRef = null;
+const controlMode = qs("control") === "1";
 
 function listenRoom(code){
   if(activeRef) activeRef.off();
@@ -53,14 +66,52 @@ function listenRoom(code){
     renderQuestion(state);
     renderPlayers(state);
     renderResults(state);
+    renderDisplayControlState();
   });
 }
 
 startLocalTick(()=>{ if(state){ renderTimer(state); } });
 
+function toggleDisplayControls(){
+  byId("displayControlDock")?.classList.toggle("collapsed");
+}
+
+function renderDisplayControlState(){
+  const dock = byId("displayControlDock");
+  if(dock) dock.classList.toggle("hidden", !controlMode);
+}
+
+async function doDisplayStart(){
+  try{
+    const duration = Number(state?.duration || DEFAULT_DURATION);
+    await startGame(roomCode, duration);
+  }catch(e){ alert(e.message); }
+}
+
+async function doDisplayReveal(){
+  if(!confirm("Cevabı açıklamak istediğine emin misin?")) return;
+  try{ await revealAnswer(roomCode); }catch(e){ alert(e.message); }
+}
+
+async function doDisplayNext(){
+  if(!confirm("Sonraki soruya geçilsin mi?")) return;
+  try{ await nextQuestion(roomCode); }catch(e){ alert(e.message); }
+}
+
+async function doDisplayFinal(){
+  if(!confirm("Final ekranı gösterilsin mi?")) return;
+  try{ await showFinal(roomCode); }catch(e){ alert(e.message); }
+}
+
+async function doDisplayReset(){
+  if(!confirm("Oyun sıfırlansın mı?")) return;
+  try{ await resetRoom(roomCode); }catch(e){ alert(e.message); }
+}
+
 if(roomCode){
   roomCode = roomCode.toUpperCase();
   listenRoom(roomCode);
+  renderDisplayControlState();
 }
 </script>
 </body>
