@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Oyuncu - Canlı Kasa</title>
-  <link rel="stylesheet" href="style.css?v=genel2">
+  <link rel="stylesheet" href="style.css?v=genel211">
 </head>
 <body class="player-page">
 <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Tam Ekran</button>
@@ -89,8 +89,8 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-<script src="firebase-config.js?v=genel2"></script>
-<script src="game.js?v=genel2"></script>
+<script src="firebase-config.js?v=genel211"></script>
+<script src="game.js?v=genel211"></script>
 <script>
 let roomCode = qs("room") || "";
 let playerId = null;
@@ -243,6 +243,7 @@ async function doJoin(){
   try{
     roomCode = byId("roomInput").value.trim().toUpperCase();
     const name = byId("nameInput").value.trim();
+    await loadQuestionBank();
     playerId = await joinPlayer(roomCode, name, selectedAvatar, selectedAvatarSrc);
     byId("joinArea").classList.add("hidden");
     byId("playArea").classList.remove("hidden");

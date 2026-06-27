@@ -284,3 +284,13 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Geçmiş oyunlar localStorage'a kaydedilir.
 - Moderatör panelinde soru JSON taslağı oluşturma alanı eklendi.
 - 6. adımdaki soru sonu mini özet özellikle eklenmedi.
+
+
+## Genel v2.1
+- Normal yayın ekranı / yönetimli yayın ekranı ayrımı kaldırıldı.
+- `display.html?room=KOD` artık direkt yönetimli yayın ekranıdır.
+- `control=1` parametresine gerek kalmadı.
+- Yayın ekranından oyun başlatınca oyuncu ekranında sorunun görünmemesi için soru bankası yükleme sırası garanti altına alındı.
+- Yayın sıralamasında para ve uzun isim taşması düzeltildi.
+- Sağ panel fotoğraf/isim/para hizası yeniden ayarlandı.
+- Cache sürümü `genel21`.

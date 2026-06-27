@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moderatör - Canlı Kasa</title>
-  <link rel="stylesheet" href="style.css?v=genel2">
+  <link rel="stylesheet" href="style.css?v=genel211">
 </head>
 <body class="moderator-page">
 <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Tam Ekran</button>
@@ -50,17 +50,14 @@
             <input id="playerLink" readonly>
           </div>
           <div>
-            <label>Yayın ekranı linki</label>
+            <label>Yayın / Yönetim ekranı linki</label>
             <input id="displayLink" readonly>
-          <label class="control-link-label">Yönetimli Yayın Linki</label>
-          <input id="displayControlLink" readonly>
           </div>
         </div>
         <div class="actions">
           <button class="btn secondary" onclick="copyText(byId('playerLink').value)">Oyuncu Linkini Kopyala</button>
           <button class="btn secondary" onclick="copyText(byId('displayLink').value)">Yayın Linkini Kopyala</button>
-        <button class="btn secondary" onclick="copyText(byId('displayControlLink').value)">Yönetimli Yayın Linkini Kopyala</button>
-          <button class="btn secondary" onclick="window.open(byId('displayLink').value,'_blank')">Yayın Ekranını Aç</button>
+          <button class="btn secondary" onclick="window.open(byId('displayLink').value,'_blank')">Yayın/Yönetim Ekranını Aç</button>
         </div>
       </div>
 
@@ -103,8 +100,8 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-<script src="firebase-config.js?v=genel2"></script>
-<script src="game.js?v=genel2"></script>
+<script src="firebase-config.js?v=genel211"></script>
+<script src="game.js?v=genel211"></script>
 <script>
 let roomCode = qs("room") || null;
 let state = null;
@@ -117,7 +114,6 @@ function showModArea(code){
   const links = makeRoomLinks(code);
   byId("playerLink").value = links.player;
   byId("displayLink").value = links.display;
-      if(byId("displayControlLink")) byId("displayControlLink").value = links.display + "&control=1";
   history.replaceState(null, "", `moderator.html?room=${code}`);
 }
 

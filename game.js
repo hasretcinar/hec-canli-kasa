@@ -8,7 +8,7 @@ let questionBankLoaded = false;
 async function loadQuestionBank(){
   if(questionBankLoaded && Array.isArray(questions) && questions.length) return questions;
   try{
-    const res = await fetch("questions.json?v=genel2", { cache:"no-store" });
+    const res = await fetch("questions.json?v=genel21", { cache:"no-store" });
     const data = await res.json();
     if(Array.isArray(data) && data.length){
       questions = data.map((q,i)=>({ id:q.id || `q${i+1}`, ...q }));
@@ -35,7 +35,8 @@ function durationFor(state){ return settingNumber(state, "duration", DEFAULT_DUR
 function currentQuestionList(state){
   const ids = Array.isArray(state?.questionIds) ? state.questionIds : null;
   if(ids && ids.length && Array.isArray(questions) && questions.length){
-    return ids.map(id => questions.find(q => String(q.id) === String(id))).filter(Boolean);
+    const mapped = ids.map(id => questions.find(q => String(q.id) === String(id))).filter(Boolean);
+    if(mapped.length) return mapped;
   }
   return Array.isArray(questions) ? questions : [];
 }
