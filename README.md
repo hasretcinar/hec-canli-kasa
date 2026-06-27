@@ -247,3 +247,10 @@ Aynı GitHub Pages linkinde güncelleme için dosyaları aynı repository’ye t
 - Fotoğraf tarayıcıda 320x320 JPEG olarak küçültülüp oyuncu profiline kaydedilir.
 - Oda kodu yayın ekranında gizli kalır.
 - Mevcut soru akışı korunmuştur; özel ilgili soru metnine dokunulmamıştır.
+
+
+## Genel v1 Temiz Paket
+- Moderatör oyuncu yönetimindeki eski hazır fotoğraf seçimi tamamen kaldırıldı.
+- Eski 4 yarışmacı fotoğrafı ve Demode logo/görsel dosyaları paket dışına çıkarıldı.
+- Oyuncu fotoğraf yükleme sistemi korunmuştur.
+- Cache sürümü `genel1t`.

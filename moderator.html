@@ -163,21 +163,14 @@ function renderPlayerManagement(state){
     const avatarHtml = av
       ? `<img src="${av.src}" alt="${escapeHtml(p.name || av.name)}">`
       : `<span>${escapeHtml(String(p.name || "?").slice(0,1).toUpperCase())}</span>`;
-
-    const avatarOptionsHtml = avatarOptions.map(a=>`
-      <option value="${a.id}" ${a.id === (p.avatar || "") ? "selected" : ""}>${escapeHtml(a.name)}</option>
-    `).join("");
-
-    return `
+      const avatarOptionsHtml = "";
+return `
       <div class="manage-player-row" data-player-id="${p.id}">
         <div class="manage-avatar">${avatarHtml}</div>
 
         <div class="manage-fields">
           <input class="manage-name" value="${escapeHtml(p.name || "")}" title="Oyuncu adı">
           <input class="manage-cash" type="number" min="0" step="10000" value="${Number(p.cash || 0)}" title="Oyuncu parası">
-          <select class="manage-avatar-select" title="Fotoğraf">
-            ${avatarOptionsHtml}
-          </select>
         </div>
 
         <div class="manage-actions">
@@ -196,8 +189,7 @@ async function doUpdatePlayer(playerId){
 
   const name = row.querySelector(".manage-name").value;
   const cash = Number(row.querySelector(".manage-cash").value);
-  const avatarEl = row.querySelector(".manage-avatar-select");
-  const avatar = avatarEl ? avatarEl.value : "";
+  const avatar = "";
 
   if(!isValidMoneyUnit(cash, true)){
     alert(moneyRuleText());
@@ -207,7 +199,7 @@ async function doUpdatePlayer(playerId){
   try{
     await updatePlayerName(roomCode, playerId, name);
     await updatePlayerCash(roomCode, playerId, cash);
-    if(avatar) await updatePlayerAvatar(roomCode, playerId, avatar);
+    // Genel sürümde hazır avatar seçimi kaldırıldı.
   }catch(e){
     alert(e.message);
   }

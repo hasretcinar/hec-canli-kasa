@@ -3518,3 +3518,11 @@ body:after{
   align-self:center;
   opacity:.7;
 }
+
+
+/* Genel temiz sürüm — moderatör eski avatar dropdown tamamen kapalı */
+.manage-avatar-select,
+.avatar-picker,
+.avatar-choice{
+  display:none !important;
+}
